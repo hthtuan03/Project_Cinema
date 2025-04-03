@@ -1,0 +1,292 @@
+﻿@model  IPagedList<DuAnRapChieuPhim.Models.Voucher>
+@using PagedList
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Voucher";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+
+    <<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- Navbar
+                </div>
+            </div>
+        </div>-->
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+        <button type="button" class="btn btn-primary createNewButton" data-toggle="modal" data-target="#addMovieModal">
+            Thêm voucher
+        </button>
+        <form class="input-group w-50" action="/Admin/Admin/FindVoucher" method="post">
+            <input name="movie_search" type="text" class="form-control" placeholder="Tìm kiếm">
+            <input class="btn btn-secondary" type="submit" value="Tìm kiếm" />
+        </form>
+        <p>
+            <table class="table">
+                <tr>
+                    <th>
+                        Mã Voucher
+                    </th>
+                    <th>
+                        Ngày hết hạn  
+                    </th>
+                    <th>
+                        Giảm giá phần trăm
+                    </th>
+                    <th>
+                        Trạng thái
+                    </th>
+                                 
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MaVoucher)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NgayHetHan)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GiamGiaPhanTram)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TrangThai)
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary edit-button" data-toggle="modal" data-target="#editMovieModal" data-id="@item.ID">
+                                Sửa
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <div class="pagination justify-content-center">
+                <ul class="pagination">
+                    @if (Model.PageCount > 1)
+                    {
+                        <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("Voucher", new { page = 1, size = ViewBag.SelectedSize })"><<</a>
+                        </li>
+                        <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("Voucher", new { page = Model.PageNumber - 1, size = ViewBag.SelectedSize })"><</a>
+                        </li>
+                        for (int i = 1; i <= Model.PageCount; i++)
+                        {
+                            <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                                <a class="page-link" href="@Url.Action("Voucher", new { page = i, size = ViewBag.SelectedSize })">@i</a>
+                            </li>
+                        }
+                        <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("Voucher", new { page = Model.PageNumber + 1, size = ViewBag.SelectedSize })">></a>
+                        </li>
+                        <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("Voucher", new { page = Model.PageCount, size = ViewBag.SelectedSize })">>></a>
+                        </li>
+                    }
+                </ul>
+            </div>
+    </div>
+</main>
+<div class="modal fade" id="addMovieModal" tabindex="-1" role="dialog" aria-labelledby="addMovieModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addMovieModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Your form goes here -->
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myForm", enctype = "multipart/form-data" }))
+                {
+
+                    @Html.AntiForgeryToken();
+                    <!-- MaVoucher -->
+                    <div class="form-group">
+                        <label for="MaVoucher" class="control-label">Mã Voucher</label>
+                        <input type="text" id="MaVoucher" name="MaVoucher" class="form-control" required />
+                    </div>
+
+                    <!-- NgayHetHan -->
+                    <div class="form-group">
+                        <label for="NgayHetHan" class="control-label">Ngày Hết Hạn</label>
+                        <input type="date" id="NgayHetHan" name="NgayHetHan" class="form-control" required />
+                    </div>
+
+                    <!-- GiamGiaPhanTram -->
+                    <div class="form-group">
+                        <label for="GiamGiaPhanTram" class="control-label">Giảm Giá (%)</label>
+                        <input type="number" id="GiamGiaPhanTram" name="GiamGiaPhanTram" class="form-control" step="0.01" required min="0" max="100" />
+                    </div>
+
+                    <!-- MaxLuotSD -->
+                    <div class="form-group">
+                        <label for="MaxLuotSD" class="control-label">Số Lượt Sử Dụng Tối Đa</label>
+                        <input type="number" id="MaxLuotSD" name="MaxLuotSD" class="form-control" required min="0" />
+                    </div>
+
+                    <!-- SoLuotDaSD -->
+                    <div class="form-group">
+                        <label for="SoLuotDaSD" class="control-label">Số Lượt Đã Sử Dụng</label>
+                        <input type="number" id="SoLuotDaSD" name="SoLuotDaSD" class="form-control" required min="0" />
+                    </div>
+
+                    <!-- TrangThai -->
+                    <div class="form-group">
+                        <label for="TrangThai" class="control-label">Trạng Thái</label>
+                        <select id="TrangThai" name="TrangThai" class="form-control" required>
+                            <option value="true">Kích Hoạt</option>
+                            <option value="false">Không Kích Hoạt</option>
+                        </select>
+                    </div>
+                    <!-- Add other form fields as needed -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary huy-button" data-dismiss="modal">Close</button>
+                        <button id="saveChangesButton" type="submit" class="btn btn-primary">Save changes</button>
+                        <button id="ThemButton" type="submit" class="btn btn-primary add-doan">Lưu</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="selectedItemId" />
+
+<script>
+    function resetModalState() {
+        $("#TenTheLoai, #addMovieModalLabel").val("");
+        $("#saveChangesButton, #ThemButton").show();
+        $("#TenTheLoai").prop("disabled", false);
+    }
+    $(document).ready(function () {
+        $(".createNewButton").click(function () {
+            resetModalState();
+            $("#addMovieModalLabel").val("Thêm");
+            $("#saveChangesButton").hide();
+            $("#addMovieModal").modal("show");
+        });
+    });
+    $(document).ready(function () {
+        $("#saveChangesButton").click(function () {
+            // Gọi hành động sửa ở đây
+            $("#myForm").attr("action", "/XuLy/EditVC");
+            $("#myForm").submit();
+        });
+        $("#ThemButton").click(function () {
+            // Gọi hành động thêm ở đây
+            $("#myForm").attr("action", "/XuLy/AddVC");
+            $("#myForm").submit();
+        });
+    });
+    $(document).ready(function () {
+        $(".edit-button").click(function () {
+            resetModalState();
+            var itemId = $(this).data("id");
+            $("#selectedItemId").val(itemId);
+            // Gửi yêu cầu Ajax để lấy dữ liệu cho mục đã chọn
+            $.ajax({
+                url: '/XuLy/EditVC', // Thay thế bằng tên thực của controller và action
+                type: 'GET',
+                data: { id: itemId },
+                success: function (data) {
+                    $("#addMovieModalLabel").val("Sửa");
+                    // Điền dữ liệu vào các trường trong modal
+                    $("#MaVoucher").val(data.TL.MaVoucher);
+                    var ngayHetHanFormatted = convertAndAddOneDay(data.TL.NgayHetHan);
+                    if (ngayHetHanFormatted) {
+                        $("#NgayHetHan").val(ngayHetHanFormatted);
+                    } else {
+                        console.log("Ngày hết hạn không hợp lệ:", data.TL.NgayHetHan);
+                    }
+                    $("#GiamGiaPhanTram").val(data.TL.GiamGiaPhanTram);
+                    $("#MaxLuotSD").val(data.TL.MaxLuotSD);
+                    $("#SoLuotDaSD").val(data.TL.SoLuotDaSD);
+
+                    // Gán giá trị cho trạng thái, mặc định nếu chưa có sẽ là 'false'
+                    $("#TrangThai").val(data.TL.TrangThai ? "true" : "false");
+                    $("#ThemButton").hide();
+                    // Hiển thị modal
+                    $("#addMovieModal").modal("show");
+                },
+                error: function () {
+                    alert("Lỗi khi lấy dữ liệu.");
+                }
+            });
+        });
+    });
+    // Hàm chuyển đổi và cộng thêm một ngày vào ngày hết hạn
+    function convertAndAddOneDay(dateString) {
+        // Kiểm tra nếu là chuỗi JSON Date hợp lệ
+        if (dateString && dateString.startsWith("/Date(") && dateString.endsWith(")/")) {
+            // Lấy timestamp từ chuỗi JSON Date
+            var timestamp = dateString.match(/\/Date\((\d+)\)\//);
+            if (timestamp && timestamp[1]) {
+                // Chuyển timestamp thành đối tượng Date
+                var date = new Date(parseInt(timestamp[1]));
+
+                // Thêm một ngày
+                date.setDate(date.getDate() + 1);
+
+                // Chuyển đổi lại thành định dạng YYYY-MM-DD
+                return date.toISOString().split('T')[0];  // Trả về định dạng 'YYYY-MM-DD'
+            }
+        }
+        return null;  // Trả về null nếu không hợp lệ
+    }
+
+    $(document).ready(function () {
+        $(".details-button").click(function () {
+            var itemId = $(this).data("id");
+            $("#selectedItemId").val(itemId);
+            // Gửi yêu cầu Ajax để lấy dữ liệu cho mục đã chọn
+            $.ajax({
+    url: '/XuLy/EditVC', // Thay thế bằng tên thực của controller và action
+    type: 'GET',
+    data: { id: itemId },
+    success: function (data) {
+        $("#addMovieModalLabel").val("Sửa");
+
+        // Điền dữ liệu vào các trường trong modal
+        $("#MaVoucher").val(data.TL.MaVoucher);
+
+        // Chuyển đổi ngày hết hạn về định dạng YYYY-MM-DD
+        var ngayHetHan = new Date(data.TL.NgayHetHan);
+        var ngayHetHanFormatted = ngayHetHan.toISOString().split('T')[0]; // Lấy phần YYYY-MM-DD
+        $("#NgayHetHan").val(ngayHetHanFormatted);
+
+        $("#GiamGiaPhanTram").val(data.TL.GiamGiaPhanTram);
+        $("#MaxLuotSD").val(data.TL.MaxLuotSD);
+        $("#SoLuotDaSD").val(data.TL.SoLuotDaSD);
+
+        // Gán giá trị cho trạng thái, mặc định nếu chưa có sẽ là 'false'
+        $("#TrangThai").val(data.TL.TrangThai ? "true" : "false");
+
+        // Ẩn nút thêm và hiển thị nút sửa
+        $("#ThemButton").hide();
+
+        // Tắt khả năng chỉnh sửa các trường dữ liệu
+        $("#MaVoucher").prop("disabled", true);
+        $("#NgayHetHan").prop("disabled", true);
+        $("#GiamGiaPhanTram").prop("disabled", true);
+        $("#MaxLuotSD").prop("disabled", true);
+        $("#SoLuotDaSD").prop("disabled", true);
+        $("#TrangThai").prop("disabled", true);
+
+        // Hiển thị modal
+        $("#addMovieModal").modal("show");
+    },
+    error: function () {
+        alert("Lỗi khi lấy dữ liệu.");
+    }
+});
+
+        });
+    });
+    $(document).ready(function () {
+        $('.huy-button').click(function (e) {
+            $('#confirmDeleteModal').modal('hide');
+            $('#addMovieModal').modal('hide');
+        });
+    });
+</script>

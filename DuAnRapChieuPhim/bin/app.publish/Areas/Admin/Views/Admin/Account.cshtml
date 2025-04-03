@@ -1,0 +1,308 @@
+﻿@model IPagedList<DuAnRapChieuPhim.Models.TaiKhoan>
+@using PagedList
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Account";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- Navbar
+                </div>
+
+            </div>
+        </div>-->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                    <div class="input-group input-group-outline">
+                        <label class="form-label">Type here...</label>
+                        <input type="text" class="form-control">
+                    </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+        <button type="button" class="btn btn-primary createNewButton" data-toggle="modal" data-target="#addMovieModal">
+            Thêm tài khoản
+        </button>
+        <table class="table">
+            <tr>
+                <th>
+                    Username
+                </th>
+                <th>
+                    Password
+                </th>
+                <th>
+                    Chức danh
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Password)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ChucDanh)
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary edit-button" data-toggle="modal" data-target="#editMovieModal" data-id="@item.Username">
+                            Sửa
+                        </button>                          |
+                        <button type="button" class="btn btn-info details-button" data-toggle="modal" data-target="#detailsMovieModal" data-id="@item.Username">
+                            Chi tiết
+                        </button> |
+                        <button type="button" class="btn btn-danger delete-button" data-toggle="modal" data-target="#deleteConfirmationModal" data-id="@item.Username">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+
+        </table>
+        <div class="pagination justify-content-center">
+            <ul class="pagination">
+                @if (Model.PageCount > 1)
+                {
+                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Room", new { page = 1, size = ViewBag.SelectedSize })">Đầu</a>
+                    </li>
+                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Room", new { page = Model.PageNumber - 1, size = ViewBag.SelectedSize })">Trước</a>
+                    </li>
+                    for (int i = 1; i <= Model.PageCount; i++)
+                    {
+                        <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Room", new { page = i, size = ViewBag.SelectedSize })">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Room", new { page = Model.PageNumber + 1, size = ViewBag.SelectedSize })">Sau</a>
+                    </li>
+                    <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Room", new { page = Model.PageCount, size = ViewBag.SelectedSize })">Cuối</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</main>
+<div class="modal fade" id="addMovieModal" tabindex="-1" role="dialog" aria-labelledby="addMovieModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addMovieModalLabel">Add Account</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myForm", enctype = "multipart/form-data" }))
+                {
+
+                    @Html.AntiForgeryToken();
+                    <!-- Your form goes here -->
+                    <!-- Add form fields here -->
+                    <div class="form-group">
+                        <label for="UserName" class="control-label">Username</label>
+                        <input type="text" id="UserName" name="UserName" class="form-control" />
+                        <span class="text-danger"> <!-- Validation message goes here --> </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Password" class="control-label">Password</label>
+                        <input type="text" id="Password" name="Password" class="form-control" />
+                        <span class="text-danger"> <!-- Validation message goes here --> </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="ChucDanh" class="control-label">Chức danh</label>
+                        <input type="text" id="ChucDanh" name="ChucDanh" class="form-control" />
+                        <span class="text-danger"> <!-- Validation message goes here --> </span>
+                    </div>
+
+
+                    <!-- Add other form fields as needed -->
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary huy-button" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary saveChangesButton">Save changes</button>
+                        <button id="ThemButton" type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                }
+                </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận ngưng bán</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc muốn xóa tài khoản này ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary huy-button" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Chắc chắn</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="selectedItemId" />
+<script>
+    $(document).ready(function () {
+        $('.delete-button').click(function (e) {
+            e.preventDefault();
+            var itemId = $(this).data("id");
+            $("#selectedItemId").val(itemId);
+            $('#confirmDeleteModal').modal('show');
+        });
+    });
+    function resetModalState() {
+        $("#UserName, #Password, #ChucDanh, #addMovieModalLabel").val("");
+        $(".saveChangesButton, .ThemButton").show();
+        $("#UserName, #Password, #ChucDanh, #addMovieModalLabel").prop("disabled", false);
+    }
+    $(document).ready(function () {
+
+
+        $(".createNewButton").click(function () {
+            resetModalState();
+            $("#addMovieModalLabel").val("Thêm");
+            $(".saveChangesButton").hide();
+            $("#addMovieModal").modal("show");
+        });
+    });
+    $(document).ready(function () {
+        $(".saveChangesButton").click(function () {
+            // Gọi hành động sửa ở đây
+            $("#myForm").attr("action", "/XuLy/EditAccount");
+            $("#myForm").submit();
+        });
+
+        $("#ThemButton").click(function () {
+            // Gọi hành động thêm ở đây
+            $("#myForm").attr("action", "/XuLy/AddAccount");
+            $("#myForm").submit();
+        });
+    });
+    $(document).ready(function () {
+        $(".edit-button").click(function () {
+            resetModalState();
+            var itemId = $(this).data("id");
+            $("#selectedItemId").val(itemId);
+
+            // Gửi yêu cầu Ajax để lấy dữ liệu cho mục đã chọn
+            $.ajax({
+                url: '/XuLy/EditAccount', // Thay thế bằng tên thực của controller và action
+                type: 'GET',
+                data: { id: itemId },
+                success: function (data) {
+                    $("#addMovieModalLabel").val("Sửa");
+                    // Điền dữ liệu vào các trường trong modal
+                    $("#UserName").val(data.tk.Username);
+                    $("#Password").val(data.tk.Password);
+                    $("#Password").prop("disabled", true);
+                    $("#ChucDanh").val(data.tk.ChucDanh);
+                    $("#ThemButton").hide();
+                    // Hiển thị modal
+                    $("#addMovieModal").modal("show");
+                },
+                error: function () {
+                    alert("Lỗi khi lấy dữ liệu.");
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $(".details-button").click(function () {
+            var itemId = $(this).data("id");
+            $("#selectedItemId").val(itemId);
+
+            // Gửi yêu cầu Ajax để lấy dữ liệu cho mục đã chọn
+            $.ajax({
+                url: '/XuLy/EditAccount', // Thay thế bằng tên thực của controller và action
+                type: 'GET',
+                data: { id: itemId },
+                success: function (data) {
+                    $("#addMovieModalLabel").val("Chi tiết");
+                    // Điền dữ liệu vào các trường trong modal
+                    $("#UserName").val(data.tk.Username);
+                    $("#Password").val(data.tk.Password);
+                    $("#ChucDanh").val(data.tk.ChucDanh);
+                    $("#saveChangesButton").hide();
+                    $("#ThemButton").hide();
+                    // Tắt khả năng chỉnh sửa các trường dữ liệu
+                    $("#UserName, #Password, #ChucDanh, #addMovieModalLabel").prop("disabled", true);
+                    // Hiển thị modal
+                    $("#addMovieModal").modal("show");
+                },
+                error: function () {
+                    alert("Lỗi khi lấy dữ liệu.");
+                }
+            });
+        });
+    });
+    $("#confirmDeleteButton").click(function (e) {
+        e.preventDefault();
+        // Lấy giá trị từ input có id là "selectedItemId"
+        var selectedItemId = $("#selectedItemId").val();
+
+        // Kiểm tra xem giá trị có tồn tại không
+        if (selectedItemId) {
+            // Gọi action trong controller với giá trị selectedItemId
+            // Thay đổi đường dẫn và phương thức HTTP tùy thuộc vào ứng dụng của bạn
+            $.ajax({
+                url: "/XuLy/DLTK", // Đường dẫn đến action trong controller
+                method: "POST", // Phương thức HTTP (POST, GET, PUT, DELETE, etc.)
+                data: { itemId: selectedItemId }, // Dữ liệu gửi đi (nếu cần)
+                success: function (response) {
+                    // Xử lý khi action thành công
+                    console.log("Action thành công", response);
+                    window.location.href = "/Admin/Admin/Account";
+                },
+                error: function (error) {
+                    // Xử lý khi có lỗi xảy ra
+                    console.error("Lỗi khi gọi action", error);
+                }
+            });
+        } else {
+            // Thông báo nếu giá trị không tồn tại
+            console.warn("Không có giá trị được chọn");
+        }
+    });
+    $(document).ready(function () {
+        $('.delete-button').click(function (e) {
+            e.preventDefault();
+            var deleteUrl = $(this).attr('href');
+            $('#confirmDeleteButton').attr('href', deleteUrl);
+            $('#confirmDeleteModal').modal('show');
+        });
+    });
+    $(document).ready(function () {
+        $('.huy-button').click(function (e) {
+            $('#confirmDeleteModal').modal('hide');
+            $('#addMovieModal').modal('hide');
+        });
+    });
+
+
+
+
+</script>
+
+
+
+
+
+

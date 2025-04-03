@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = "QRCheck";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+
+
+
+
+<style>
+    body {
+        font-family: 'Tajawal', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h2 {
+        color: white;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    #qr-reader {
+        margin: auto;
+        width: 300px;
+        height: 200px; /* Chiều cao cho hình cái tivi */
+        border: 10px solid white; /* Border màu xanh */
+        border-radius: 20px; /* Bo góc cho khung */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Hiệu ứng bóng */
+        overflow: hidden; /* Ẩn phần thừa ra ngoài */
+        position: relative; /* Để định vị các phần tử con */
+        background-color: white; /* Màu nền cho khung */
+    }
+
+        /* Đặt hình ảnh làm nền cho khung */
+        #qr-reader::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('path_to_tv_image.png') no-repeat center center;
+            background-size: cover;
+            z-index: 1; /* Đảm bảo hình ảnh nằm dưới */
+        }
+
+    #result {
+        display: flex;
+        font-weight: bold;
+        color: white; /* Màu chữ */
+        margin-left:13px;
+        margin-top: 10px;
+        white-space: pre-wrap; /* Giúp xuống dòng cho nội dung */
+    }
+
+    
+    .overlay
+
+    {
+        position: absolute;
+        top: 51%; /* Đặt vị trí của overlay so với hình ảnh */
+        left: 42%;
+        transform: translate(-50%, -50%);
+        color: white; /* Màu chữ để dễ nhìn trên hình */
+        background-color: rgba(0, 0, 0, 0.8); /* Làm nền mờ để chữ rõ hơn */
+       
+        
+        text-align: center;
+        
+        margin-left:280px;
+        width: 310px;
+        height: 210px; /* Chiều cao cho hình cái tivi */
+        border: 10px solid black; /* Border màu xanh */   
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Hiệu ứng bóng */
+        overflow: hidden; /* Ẩn phần thừa ra ngoài */
+       
+    }
+</style>
+
+
+
+
+
+<h2>Kiểm tra vé của bạn !</h2>
+
+
+
+
+<div style="position: relative; width: 50%;">
+    <img style="width: 100%; margin-left:280px" src="~/IMG/ticket1.png" alt="ticket">
+    <div class="overlay">
+        <p>Kết quả: <span id="result">Chưa có kết quả</span></p>
+    </div>
+</div>
+<div style="text-align:center;" id="qr-reader"></div>
+
+
+<!-- Import thư viện Html5Qrcode -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+
+<script>
+    function onScanSuccess(decodedText, decodedResult) {
+        document.getElementById("result").innerText = decodedText;
+        // Dừng quét sau khi quét thành công
+        html5QrCode.stop().then(ignore => {
+            console.log("Đã dừng quét.");
+        }).catch(err => {
+            console.log("Lỗi khi dừng quét:", err);
+        });
+    }
+
+    function startQrCodeScanner() {
+        let html5QrCode = new Html5Qrcode("qr-reader");
+        html5QrCode.start(
+            { facingMode: "environment" },
+            { fps: 10, qrbox: { width: 250, height: 250 } },
+            onScanSuccess,
+            errorMessage => {
+                console.log("Lỗi khi quét mã QR: ", errorMessage);
+            }
+        ).catch(err => {
+            console.error("Không thể khởi động trình quét mã QR: ", err);
+            document.getElementById("result").innerText = "Lỗi khởi động: " + err;
+        });
+    }
+
+    // Đợi thư viện tải xong rồi mới khởi chạy
+    window.onload = function () {
+        if (typeof Html5Qrcode !== 'undefined') {
+            startQrCodeScanner();
+        } else {
+            console.error("Thư viện Html5Qrcode không tải được.");
+            document.getElementById("result").innerText = "Không tải được thư viện quét QR";
+        }
+    };
+</script>

@@ -1,0 +1,58 @@
+﻿@model DuAnRapChieuPhim.Models.DoanhThuViewModel
+@{
+    ViewBag.Title = "Statistics";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <div class="container-fluid py-4">
+        <h1 class="text-center">Thống kê số liệu doanh thu</h1>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Tổng thu được</h5>
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        var revenueData = {
+            labels: @Html.Raw(Json.Encode(Model.Labels.Select(d => DateTime.Parse(d).ToShortDateString()))),
+            datasets: [
+                {
+                    label: 'Doanh thu bán vé',
+                    data: @Html.Raw(Json.Encode(Model.TicketData)),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Doanh thu bán combo',
+                    data: @Html.Raw(Json.Encode(Model.ComboData)),
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(200, 70, 89, 1)',
+                    borderWidth: 1
+                }
+            ]
+        };
+
+        var revenueChart = new Chart(document.getElementById('revenueChart').getContext('2d'), {
+            type: 'bar',
+            data: revenueData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</main>

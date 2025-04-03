@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "DetailsHD";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<div class="container mt-4 text-center">
+    <h2 class="text-white" style="font-weight:bold">Thông Tin Hóa Đơn</h2>
+
+    <p class="text-white" style="font-weight:bold">Mã QR:</p>
+    <img src="data:image/png;base64,@ViewBag.QRCode" alt="QR Code" />
+    <div class="mt-4">
+        <table class="table table-bordered table-dark">
+            <thead>
+                <tr>
+                    <th>Mã hóa đơn</th>
+                    <th>Họ tên</th>
+                    <th>Số điện thoại</th>
+                    <th>Email</th>
+                    <th>Trạng thái</th>
+                    <th>Tiền vé</th>
+                    <th>Tiền combo</th>
+                    <th>Tổng tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                    <tr>
+                        <td>@ViewBag.hd.MaHoaDon</td>
+                        <td>@ViewBag.hd.HoTen</td>
+                        <td>@ViewBag.hd.SoDienThoai</td>
+                        <td>@ViewBag.hd.Email</td>
+                        <td>@ViewBag.hd.TrangThai</td>
+                        <td>@ViewBag.hd.TienVe</td>
+                        <td>@ViewBag.hd.TienCombo</td>
+                        <td>@ViewBag.hd.TongTien</td>
+                    </tr>
+
+            </tbody>
+        </table>
+    </div>
+    <div class="mt-4">
+        <h3 class="text-white" style="font-weight:bold">Chi Tiết Combo</h3>
+        <table class="table table-bordered table-dark">
+            <thead>
+                <tr>
+                    <th>Tên Combo</th>
+                    <th>Mô tả</th>
+                    <th>Tên đồ ăn</th>
+                    <th>Số lượng đồ ăn</th>
+                    <th>Size đồ ăn</th>
+                    <th>Tên nước</th>
+                    <th>Số lượng nước</th>
+                    <th>Size nước</th>
+                    <th>Số lượng combo đã mua</th>
+                    <th>Giá Combo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.cb)
+                {
+                    <tr>
+                        <td>@item.cb.TenCB</td>
+                        <td>@item.cb.MoTa</td>
+                        <td>@item.doan.TenDoAn</td>
+                        <td>@item.cb.SLDoAn</td>
+                        <td>@item.doan.Loai</td>
+                        <td>@item.nuoc.TenNuoc</td>
+                        <td>@item.cb.SLNuoc</td>
+                        <td>@item.nuoc.Loai</td>
+                        <td>@item.cthd.SoLuong</td>
+                        <td>@item.cthd.GiaTien</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-4">
+        <h3 class="text-white" style="font-weight:bold">Chi Tiết Vé đã mua</h3>
+        <table class="table table-bordered table-dark">
+            <thead>
+                <tr>
+                    <th>Tên phim</th>
+                    <th>Thời lượng</th>
+                    <th>Phòng</th>
+                    <th>Tên ghế</th>
+                    <th>Thời gian chiếu</th>
+                    <th>Giá Tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.ghe)
+                {
+                    <tr>
+                        <td>@item.phim.TenPhim</td>
+                        <td>@item.phim.ThoiLuong phút</td>
+                        <td>@item.phong.TenPhong</td>
+                        <td>@item.ghe.TenGhe</td>
+                        <td>@item.lichChieu.NgayChieu.ToString("dd/MM/yyyy") @item.lichChieu.GioChieu</td>
+                        <td>@item.chiTiet.TongTien</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

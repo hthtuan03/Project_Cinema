@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "News";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+@model  IPagedList<DuAnRapChieuPhim.Models.Tintuc>
+@using PagedList
+@using PagedList.Mvc
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-MBMaV5mRABtm9H0E4PZZZvcJvbNvAojypkKRUpAAB2F4adu8HtwVSGF8LZ6IFjG" crossorigin="anonymous">
+<style>
+    .pagination {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+        .pagination a, .pagination span {
+            padding: 8px 12px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: #333;
+        }
+
+        .pagination .active {
+            font-weight: bold;
+            background-color: #007bff;
+            color: white;
+        }
+
+        .pagination a:hover {
+            background-color: #ddd;
+        }
+</style>
+<h2>Ưu đãi và khuyến mãi</h2>
+<hr />
+
+<div style="margin-top:80px;" class="row">
+    @foreach (var sp in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <a href="@Url.Action("DetailNew","Home",new {id=sp.Matin})">
+                    <img src="~/IMG/@sp.Anhbia" alt="Tên tin tức" class="card-img-top custom-image-size" />
+                </a>
+
+            </div>
+        </div>
+    }
+</div>
+
+<div class="pagination">
+    @Html.PagedListPager(Model, page => Url.Action("News", new { page }),
+        new PagedListRenderOptions
+        {
+            DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+            DisplayLinkToLastPage = PagedListDisplayMode.Always,
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            DisplayLinkToIndividualPages = true,
+            MaximumPageNumbersToDisplay = 5,
+            LinkToPreviousPageFormat = "Previous",
+            LinkToNextPageFormat = "Next",
+            LinkToFirstPageFormat = "First",
+            LinkToLastPageFormat = "Last"
+        })
+</div>
+

@@ -1,0 +1,315 @@
+﻿@{
+    ViewBag.Title = "Movie";
+    Layout = "~/Views/Shared/Layout.cshtml";
+    var currentDate = DateTime.Now.Date;
+    var user = Session["KH"] as DuAnRapChieuPhim.Models.ThongTinCaNhan;
+}
+@model IPagedList<DuAnRapChieuPhim.Models.Phim>
+@using PagedList
+@using PagedList.Mvc
+<style>
+    .custom-modal {
+        background-color: #000; /* Màu đen */
+        color: #fff; /* Màu chữ trắng */
+    }
+
+        .custom-modal .modal-content {
+            background-color: transparent; /* Background mờ */
+            border: none; /* Loại bỏ đường viền */
+        }
+
+        .custom-modal .modal-header,
+        .custom-modal .modal-footer {
+            border-bottom: none; /* Loại bỏ đường viền phía dưới header và phía trên footer */
+        }
+
+        .custom-modal .btn-date,
+        .custom-modal .btn-time {
+            color: #000; /* Màu chữ đen cho nút ngày và thời gian */
+        }
+
+    .btn-date, .btn-time {
+        /* Thêm các thuộc tính CSS cho button ngày và thời gian tại đây */
+        background-color: #fff; /* Màu nền */
+        color: #000; /* Màu chữ */
+        border: 1px solid #ccc; /* Viền */
+        padding: 10px; /* Kích thước lề và padding */
+        margin: 5px; /* Kích thước lề và padding */
+        border-radius: 5px; /* Độ cong góc */
+        cursor: pointer; /* Con trỏ chuột */
+    }
+
+        .btn-date:hover {
+            /* Thêm các thuộc tính CSS cho trạng thái hover của button tại đây */
+            background-color: #ddd; /* Màu nền khi hover */
+            transform: scale(1.1); /* Tăng kích thước 10% khi hover */
+            transition: transform 0.3s ease; /* Thêm hiệu ứng chuyển động */
+        }
+
+        .btn-time:hover {
+            background-color: #ddd; /* Màu nền khi hover */ /* Tăng kích thước 10% khi hover */
+        }
+
+    .search-box {
+        width: fit-content;
+        height: fit-content;
+        position: relative;
+    }
+
+    .input-search {
+        height: 50px;
+        width: 50px;
+        border-style: none;
+        padding: 10px;
+        font-size: 18px;
+        letter-spacing: 2px;
+        outline: none;
+        border-radius: 25px;
+        transition: all .5s ease-in-out;
+        background-color: #000000;
+        padding-right: 40px;
+        color: #fff;
+    }
+
+        .input-search::placeholder {
+            color: rgba(255,255,255,.5);
+            font-size: 18px;
+            letter-spacing: 2px;
+            font-weight: 100;
+        }
+
+    .btn-search {
+        width: 50px;
+        height: 50px;
+        border-style: none;
+        font-size: 20px;
+        font-weight: bold;
+        outline: none;
+        cursor: pointer;
+        border-radius: 50%;
+        position: absolute;
+        right: 0px;
+        color: #ffffff;
+        background-color: transparent;
+        pointer-events: painted;
+    }
+
+        .btn-search:focus ~ .input-search {
+            width: 300px;
+            border-radius: 0px;
+            background-color: transparent;
+            border-bottom: 1px solid rgba(255,255,255,.5);
+            transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+        }
+
+    .input-search:focus {
+        width: 300px;
+        border-radius: 0px;
+        background-color: transparent;
+        border-bottom: 1px solid rgba(255,255,255,.5);
+        transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+    }
+
+    select {
+        /* Reset Select */
+        appearance: none;
+        outline: 10px red;
+        border: 0;
+        box-shadow: none;
+        /* Personalize */
+        flex: 1;
+        padding: 0 1em;
+        color: #fff;
+        background-color: #000000;
+        background-image: none;
+        cursor: pointer;
+    }
+        /* Remove IE arrow */
+        select::-ms-expand {
+            display: none;
+        }
+    /* Custom Select wrapper */
+    .select {
+        position: relative;
+        display: flex;
+        width: 20em;
+        height: 3em;
+        border-radius: .25em;
+        overflow: hidden;
+    }
+        /* Arrow */
+        .select::after {
+            content: '\25BC';
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 1em;
+            background-color: #34495e;
+            transition: .25s all ease;
+            pointer-events: none;
+        }
+        /* Transition */
+        .select:hover::after {
+            color: #f39c12;
+        }
+</style>
+<h1 style="color: white; margin-top: 6rem; margin-bottom: 6rem; text-align: center; font-weight: bold ">Phim đang chiếu</h1>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="select">
+            <select id="theLoaiDropdown" name="theLoaiId">
+                <option value="0">Lọc theo thể loại</option>
+                @foreach (var theloai in ViewBag.TheloaiList)
+                {
+                    <option value="@theloai.MaTheLoai">@theloai.TenTheLoai</option>
+                }
+            </select>
+        </div>
+        <div class="search-box">
+            <button class="btn-search"><i class="fas fa-search"></i></button>
+            <input type="text" class="input-search" placeholder="Tìm kiếm tên phim, diễn viên, đạo diễn...">
+        </div>
+    </div>
+
+
+    <div class="row">
+        @foreach (var phim in Model)
+        {
+            <div class="col-md-4">
+                <div class="movie">
+                    <a href="@Url.Action("Detail","Home",new {id = phim.MaPhim})">
+                        <img src="~/IMG/@phim.AnhBia" alt="@phim.TenPhim" class="img-fluid" style="width:250px;height:350px; " />
+                    </a>
+                    <h2 style="font-weight: bold">@phim.TenPhim</h2>
+                    <div class="d-flex justify-content-end align-items-center movie-button-container">
+                        <button class="btn btn-custom custom-button btn-datve" data-toggle="modal" data-target="#bookingModal" data-phimid="@phim.MaPhim">Đặt vé</button>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal fade custom-modal" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <input type="hidden" id="maPhimInput" name="maPhim" value="" />
+
+                <div class="row">
+                    <!-- Sử dụng vòng lặp để tạo 30 ngày -->
+                    <!-- Sử dụng các class của Bootstrap để làm cho nút trông đẹp hơn -->
+                    @for (int i = 0; i < 30; i++)
+                    {
+
+                        <div class="col-md-1 mb-3">
+                            <button class="btn-date" data-ngay="@i">@currentDate.ToString("dd/MM")</button>
+                        </div>
+                        currentDate = currentDate.AddDays(1);
+                    }
+                </div>
+            </div>
+            <div class="modal-body">
+                <!-- Phần đầu - Dữ liệu ngày -->
+                <!-- Phần giữa - Mô tả ngôn ngữ tiếng Anh -->
+                <div id="NgonNgu">
+                </div>
+
+                <!-- Phần cuối - Khung thời gian -->
+
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <!-- Sử dụng vòng lặp để tạo các khung thời gian -->
+                    <!-- Sử dụng các class của Bootstrap để làm cho nút trông đẹp hơn -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function handleTimeButtonClick(maPhongInputId) {
+        // Chuyển hướng đến URL action với thời gian được chọn
+        var maPhim = document.getElementById('maPhimInput').value;
+        // Chuyển hướng đến action ChonGhe với tham số maPhim
+
+        window.location.href = 'ChonGhe?id=' + encodeURIComponent(maPhim) + '&MaChieuPhim=' + encodeURIComponent(maPhongInputId);
+    }
+
+    // Hàm xử lý khi người dùng nhấp vào button ngày
+    function handleDateButtonClick(phimId, ngayChieu) {
+        $("#NgonNgu").empty();
+        $('#bookingModal .modal-footer .row').empty();
+        $.ajax({
+            url: "/Home/GetDetails", // Thay đổi ControllerName nếu cần
+            type: "GET",
+            data: { phimId: phimId, ngayChieu: ngayChieu },
+            success: function (data) {
+                console.log(data);
+                if (data.ngonNgu == null) {
+                    ngonNgu = "";
+                } else {
+                    var ngonNgu = data.ngonNgu;
+                }
+
+                var gioChieuList = data.gioChieuList;
+
+                // Sử dụng dữ liệu nhận được
+                // Ví dụ: Điền dữ liệu vào modal
+                $("#NgonNgu").text("Ngôn ngữ: " + ngonNgu);
+
+                // Xử lý vòng lặp để hiển thị thời gian chiếu
+                for (var i = 0; i < gioChieuList.length; i++) {
+                    var gio = gioChieuList[i].hours;
+                    var phut = gioChieuList[i].minutes;
+                    var maPhongInputId = "maPhongInput" + i;
+                    // Định dạng số giờ và số phút thành "00"
+                    var formattedGio = gio.toString().padStart(2, '0');
+                    var formattedPhut = phut.toString().padStart(2, '0');
+                    // Xây dựng chuỗi để hiển thị
+                    var timeString = formattedGio + ":" + formattedPhut;
+                    var button = $("<button/>", {
+                        class: "btn-outline-light btn-time",
+                        value: gioChieuList[i].MaChieuPhim,
+                        text: timeString,
+                        click: function () {
+                            // Gọi hàm xử lý khi nhấp vào nút thời gian
+                            handleTimeButtonClick($(this).val());
+                        }
+                    });
+                    $(".modal-footer .row").append($("<div/>", { class: "col-md-4 mb-3" }).append(button));
+                }
+                $("#maPhimInput").val(phimId);
+                // Hiển thị modal
+                $("#bookingModal").modal("show");
+            },
+            error: function () {
+                console.log("Error while retrieving data");
+            }
+        });
+    }
+
+    // Gắn sự kiện cho tất cả các button ngày
+    $(".btn-date").on("click", function () {
+        var phimId = $("input[name='maPhim']").val();
+        var ngayChieu = $(this).attr("data-ngay");
+
+        handleDateButtonClick(phimId, ngayChieu);
+    });
+
+    // Gắn sự kiện cho nút .btn-datve
+    $(".btn-datve").on("click", function () {
+        // Xử lý AJAX tại đây (nếu cần)
+        var phimId = $(this).data("phimid");
+        handleDateButtonClick(phimId);
+    });
+
+    $(".btn-search").on("click", function () {
+        var searchQuery = $(".input-search").val();
+        var theLoaiId = $("#theLoaiDropdown").val();
+        window.location.href = '/Home/TimKiem?searchQuery=' + searchQuery + '&trangThai=Sắp chiếu' + '&theLoaiId=' + theLoaiId;
+    });
+</script>
+

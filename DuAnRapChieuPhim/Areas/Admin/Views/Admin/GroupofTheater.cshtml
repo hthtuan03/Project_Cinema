@@ -1,0 +1,34 @@
+﻿@model  List<String>
+@using PagedList
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Movie";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- Navbar
+                </div>
+            </div>
+        </div>-->
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+        <h2>Các cụm rạp của các quận</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    Tên Cụm
+                </th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="@Url.Action("Theatre", "Admin", new { district = item })">
+                            @Html.DisplayFor(modelItem => item)
+                        </a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</main>

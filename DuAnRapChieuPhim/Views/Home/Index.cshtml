@@ -1,0 +1,477 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layout.cshtml";
+
+}
+@model IEnumerable<DuAnRapChieuPhim.Models.Phim>
+@using PagedList
+@using PagedList.Mvc
+@using DuAnRapChieuPhim.Helpers
+<style>
+    .search-box {
+        width: fit-content;
+        height: fit-content;
+        position: relative;
+    }
+
+    .input-search {
+        height: 43px;
+        border-style: double;
+        padding: 10px 10px;
+        font-size: 18px;
+        letter-spacing: 2px;
+        outline: none;
+        margin-top: 0px;
+        transition: all .5s ease-in-out;
+        background-color: transparent;
+        color: #fff;
+    }
+
+        .input-search::placeholder {
+            color: rgba(255,255,255,.5);
+            font-size: 18px;
+            letter-spacing: 2px;
+            font-weight: 100;
+        }
+
+    .btn-search {
+        width: 43px;
+        height: 43px;
+        border-style: none;
+        font-size: 20px;
+        font-weight: bold;
+        outline: none;
+        margin-top: opx;
+        cursor: pointer;
+        border-radius: 50%;
+        position: absolute;
+        right: 0px;
+        color: #ffffff;
+        background-color: transparent;
+        pointer-events: painted;
+    }
+
+
+        .btn-search:focus ~ .input-search {
+            width: 300px;
+            border-radius: 0px;
+            background-color: transparent;
+            border-bottom: 1px solid rgba(255,255,255,.5);
+            transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+        }
+
+    .input-search:focus {
+        width: 300px;
+        border-radius: 0px;
+        background-color: transparent;
+        border-bottom: 1px solid rgba(255,255,255,.5);
+        transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+    }
+
+    select {
+        /* Reset Select */
+        text-align: center;
+        outline: 10px red;
+        border: 0;
+        box-shadow: none;
+        /* Personalize */
+        flex: 1;
+        padding: 0 1em;
+        color: #fff;
+        background-color: chocolate;
+        background-image: none;
+        cursor: pointer;
+    }
+        /* Remove IE arrow */
+        select::-ms-expand {
+            display: none;
+        }
+    /* Custom Select wrapper */
+    .select {
+        display: flex;
+        width: 20em;
+        height: 3em;
+        border-radius: .25em;
+        overflow: hidden;
+    }
+
+
+    /* slider */
+
+    /* Định dạng cho nút Đặt vé */
+    .btn-dat-ve {
+        font-size: 1.2em;
+        background: linear-gradient(45deg, #ff007b, #ffdb00);
+        border: none;
+        color: #fff;
+        border-radius: 25px;
+        text-transform: uppercase;
+        box-shadow: 0px 8px 15px rgba(255, 0, 123, 0.4);
+        transition: all 0.3s ease;
+    }
+
+        .btn-dat-ve:hover {
+            background: linear-gradient(45deg, #ff5e5e, #ffaa00);
+            box-shadow: 0px 12px 20px rgba(255, 94, 94, 0.4);
+            color: #fff;
+            transform: translateY(-3px);
+        }
+    /* Cấu trúc modal */
+    .modal {
+        display: none; /* Ẩn mặc định */
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7); /* Nền mờ */
+    }
+
+    .modal-content {
+        position: relative;
+        margin: 10% auto;
+        width: 80%;
+        max-width: 700px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px #000;
+    }
+
+    /* Nút đóng modal */
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        color: #333;
+    }
+    /* Tùy chỉnh cho các dropdown */
+    .form-select {
+        border-radius: 8px; /* Bo góc các dropdown */
+        padding: 10px; /* Thêm padding cho các dropdown */
+        transition: all 0.3s ease-in-out; /* Hiệu ứng khi hover */
+    }
+
+        .form-select:hover {
+            border-color: #007bff; /* Thay đổi màu viền khi hover */
+        }
+
+    /* Tùy chỉnh cho nút Đặt Vé */
+    .btn-dat-ve {
+        font-size: 18px;
+        text-transform: uppercase;
+    }
+
+        .btn-dat-ve:hover {
+            background-color: #0056b3; /* Màu nền khi hover */
+            border-color: #0056b3;
+        }
+
+    /* Card Shadow */
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ cho card */
+    }
+</style>
+
+
+<!--===========================Slider===========================-->
+<hr />
+<div id="slider" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        @for (int i = 0; i < ViewBag.Sliders.Count; i++)
+        {
+            <li data-target="#slider" data-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
+        }
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+        @for (int i = 0; i < ViewBag.Sliders.Count; i++)
+        {
+            <div class="item @(i == 0 ? "active" : "")">
+                <img src="~/IMG/@ViewBag.Sliders[i].HinhAnh" alt="@ViewBag.Sliders[i].TenHinh">
+                <div class="carousel-caption custom-caption">
+
+                    <a href="/Home/MovieShow" class="btn btn-primary btn-dat-ve">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("btndatve")</a>
+
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Left and right controls -->
+    <a class="left carousel-control" href="#slider" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <a class="right carousel-control" href="#slider" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
+</div>
+
+
+<!-- thanh tim kiem -->
+<div class="container">
+    <div style="display: flex; padding: 10px; gap: 20px;" class="row justify-content-center">
+
+        <div class="search-box">
+            <button class="btn-search"><i class="fas fa-search"></i></button>
+            <input type="text" class="input-search" placeholder="@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("searchbox")...">
+        </div>
+
+
+        <div class="select">
+            <select id="theLoaiDropdown" name="theLoaiId">
+                <option value="0">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("searchdrop")</option>
+                @foreach (var theloai in ViewBag.TheloaiList)
+                {
+                    <option value="@theloai.MaTheLoai">@theloai.TenTheLoai</option>
+                }
+            </select>
+
+
+        </div>
+
+
+    </div>
+
+
+
+</div>
+<div class="container mt-4">
+    <div style="background-color:transparent;" class="card shadow-sm">
+        <div class="card-body">
+            <!-- Sử dụng d-flex để các phần tử nằm cùng một hàng -->
+            <div class="d-flex justify-content-between">
+                <!-- ComboBox Chọn Phim -->
+                <div class="col-md-3 mb-3">
+                    <select id="phimDropdown" class="form-select">
+                        <option value="">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("chonphim")</option>
+                        @foreach (var phim in ViewBag.PhimList)
+                        {
+                            <option value="@phim.MaPhim">@phim.TenPhim</option>
+                        }
+                    </select>
+                </div>
+                <!-- ComboBox Chọn Rạp -->
+                <div class="col-md-2 mb-3">
+                    <select id="rapDropdown" class="form-select">
+                        <option value="">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("chonrap")</option>
+                    </select>
+                </div>
+                <!-- ComboBox Chọn Ngày -->
+                <div class="col-md-2 mb-3">
+                    <select id="ngayDropdown" class="form-select">
+                        <option value="">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("chonngay")</option>
+                    </select>
+                </div>
+                <!-- ComboBox Chọn Suất -->
+                <div class="col-md-2 mb-3">
+                    <select id="suatDropdown" class="form-select">
+                        <option value="">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("chonsuat")</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+
+                    <button id="btnDatVe" class="btn btn-lg btn-primary rounded-pill shadow-lg px-5 py-2">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("btndatve")</button>
+
+                </div>
+            </div>
+            <!-- Nút Đặt Vé -->
+
+        </div>
+    </div>
+</div>
+
+
+
+<div class="chrac" id="mov">
+    <div class="hc">
+        @DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav2_1")
+    </div>
+    <div class="main_flim">
+        @foreach (var phim in Model.Where(u => u.TrangThai.Contains("Đang chiếu")).Take(4))
+        {
+            <div class="box">
+                <a href="@Url.Action("Detail","Home",new {id= phim.MaPhim})">
+                    <div class="box-img">
+                        <img src="~/IMG/@phim.AnhBia">
+                    </div>
+                    <div class="">
+                        <h4 style="color:white;">@phim.TenPhim</h4>
+                    </div>
+                </a>
+                <div class="button-container">
+                    <!-- Nút Trailer với thuộc tính data -->
+                    <button class="button uil uil-video" onclick="openTrailer('@phim.Video')">Trailer</button>
+                    <a href="@Url.Action("Detail", "Home", new { id = phim.MaPhim })" class="button uil uil-ticket">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("btndatve")</a>
+                </div>
+            </div>
+        }
+    </div>
+    <a href="~/Home/MovieShow">
+        <p style="color:white;margin-top:10px;text-align:center;">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav2_3")</p>
+    </a>
+    <hr />
+</div>
+
+<!-- Modal xem Trailer -->
+<div id="trailerModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeTrailer()">&times;</span>
+        <iframe id="trailerVideo" width="100%" height="400" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+</div>
+
+
+<div class="chrac" id="mov">
+    <div class="hc">
+        @DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav2_2")
+    </div>
+    <div class="main_flim">
+        @foreach (var phim in Model.Where(u => u.TrangThai.Contains("Sắp chiếu")).Take(4))
+        {
+            <div class="box">
+                <a href="@Url.Action("Detail","Home",new {id= phim.MaPhim})">
+                    <div class="box-img">
+                        <img src="~/IMG/@phim.AnhBia">
+                    </div>
+                    <div class="">
+                        <h4 style="color:white;">@phim.TenPhim</h4>
+                    </div>
+                </a>
+                <div class="button-container">
+                    <!-- Nút Trailer với thuộc tính data -->
+                    <button class="button uil uil-video" onclick="openTrailer('@phim.Video')">Trailer</button>
+                    <a href="@Url.Action("Detail", "Home", new { id = phim.MaPhim })" class="button uil uil-ticket ">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("btndatve")</a>
+                </div>
+            </div>
+        }
+    </div>
+    <a href="~/Home/MovieShow">
+        <p style="color:white;margin-top:10px;text-align:center;">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav2_3")</p>
+    </a>
+</div>
+
+
+<!-- Modal xem Trailer -->
+<div id="trailerModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeTrailer()">&times;</span>
+        <iframe id="trailerVideo" width="100%" height="400" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+</div>
+
+
+
+
+<script>
+
+    
+    $(".btn-search").on("click", function () {
+        var searchQuery = $(".input-search").val();
+        var theLoaiId = $("#theLoaiDropdown").val();
+        window.location.href = '/Home/TimKiem?searchQuery=' + searchQuery + '&trangThai=Đang chiếu' + '&theLoaiId=' + theLoaiId;
+    });
+    function openTrailer(url) {
+        var modal = document.getElementById("trailerModal");
+        var video = document.getElementById("trailerVideo");
+
+        video.src = url; // Đặt URL của video trailer
+        modal.style.display = "block"; // Hiển thị modal
+    }
+
+    function closeTrailer() {
+        var modal = document.getElementById("trailerModal");
+        var video = document.getElementById("trailerVideo");
+
+        video.src = ""; // Xóa URL để ngừng video
+        modal.style.display = "none"; // Ẩn modal
+    }
+    $(document).ready(function () {
+        // Lấy danh sách rạp chiếu dựa trên phim đã chọn
+        $('#phimDropdown').change(function () {
+            var maPhim = $(this).val();
+            if (maPhim) {
+                $.get('/Home/GetRapByPhim', { maPhim: maPhim }, function (data) {
+                    $('#rapDropdown').html('<option value="">Chọn Rạp</option>');
+                    data.forEach(function (rap) {
+                        $('#rapDropdown').append(`<option value="${rap.MaRap}">${rap.TenRap}</option>`);
+                    });
+                });
+            } else {
+                $('#rapDropdown').html('<option value="">Chọn Rạp</option>');
+                $('#ngayDropdown').html('<option value="">Chọn Ngày</option>');
+                $('#suatDropdown').html('<option value="">Chọn Suất</option>');
+            }
+        });
+
+        // Lấy danh sách ngày chiếu dựa trên rạp đã chọn
+        $('#rapDropdown').change(function () {
+            var maRap = $(this).val();
+            var maPhim = $('#phimDropdown').val();
+            if (maRap) {
+                $.get('/Home/GetNgayByRap', { maRap: maRap, maPhim: maPhim }, function (data) {
+                    $('#ngayDropdown').html('<option value="">Chọn Ngày</option>');
+                    data.forEach(function (ngay) {
+                        $('#ngayDropdown').append(`<option value="${ngay}">${ngay}</option>`);
+                    });
+                });
+            } else {
+                $('#ngayDropdown').html('<option value="">Chọn Ngày</option>');
+                $('#suatDropdown').html('<option value="">Chọn Suất</option>');
+            }
+        });
+
+        $('#ngayDropdown').change(function () {
+            var maRap = $('#rapDropdown').val();
+            var maPhim = $('#phimDropdown').val();
+            var ngayChieu = $(this).val();
+
+            if (maRap && ngayChieu) {
+                // Chuyển ngày sang định dạng yyyy-MM-dd nếu cần thiết
+                var dateParts = ngayChieu.split('-');
+                var formattedDate = dateParts[2] + '-' + dateParts[1] + '-' + dateParts[0]; // Chuyển thành yyyy-MM-dd
+
+                $.get('/Home/GetSuatByNgay', { maRap: maRap, ngayChieu: formattedDate }, function (data) {
+                    if (Array.isArray(data)) {
+                        $('#suatDropdown').html('<option value="">Chọn Suất</option>');
+                        data.forEach(function (suat) {
+                            $('#suatDropdown').append(`<option value="${suat.MaChieuPhim}">${suat.GioBatDau}</option>`);
+                        });
+                    } else if (data.error) {
+                        alert(data.error);
+                    } else {
+                        alert("Dữ liệu không hợp lệ!");
+                    }
+                }).fail(function () {
+                    alert("Không thể kết nối đến máy chủ. Vui lòng thử lại sau.");
+                });
+            } else {
+                $('#suatDropdown').html('<option value="">Chọn Suất</option>');
+            }
+        });
+
+
+        // Nút Đặt Vé
+        $('#btnDatVe').click(function () {
+            var maPhim = $('#phimDropdown').val();
+            var maSuat = $('#suatDropdown').val();
+
+            if (maPhim && maSuat) {
+
+                window.location.href = `/Home/ChonGhe?id=${maPhim}&MaChieuPhim=${maSuat}`;
+            } else {
+                alert('Vui lòng chọn đầy đủ thông tin trước khi đặt vé.');
+            }
+        });
+    });
+
+</script>
+
+
+

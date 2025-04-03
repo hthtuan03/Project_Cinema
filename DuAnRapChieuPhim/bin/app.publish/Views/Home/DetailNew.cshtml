@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "DetailNew";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+@model DuAnRapChieuPhim.Models.Tintuc
+<link rel="stylesheet" href="~/Content/Detail.css">
+<h2 style="color: red; margin-top: 6rem;" class="text-danger">@Model.Chudetin</h2>
+<div class="custom-container">
+    <div class="container-inner">
+        <div class="row">
+            <div class="col-md-3">
+                <img src="~/IMG/@Model.Anhbia" alt="Poster phim" class="img-fluid animate__animated animate__zoomIn" style="width: 300px; height: auto;"> <!-- Thêm hiệu ứng zoomIn từ Animate.css -->
+            </div>
+            <div class="col-md-9 details-right">
+                <p class="mb-4">1. Thời gian chương trình:</p>
+                <p>
+                    @Model.ThoiHan
+                </p>
+                <p class="mb-4">2. Nội dung:</p>
+                <p>
+                    @Model.Mota
+                </p>
+                <p class="mb-4">3. Điều kiện và điều khoản:</p>
+                <p>
+                    @Model.DieuKien
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

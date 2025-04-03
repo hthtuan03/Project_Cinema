@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login V1</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="~/images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/css/main.css">
+    <!--===============================================================================================-->
+    <style>
+        body {
+            background-color: #2c2c2c;
+            font-family: Arial, sans-serif;
+        }
+
+        .container-login100 {
+            background: linear-gradient(rgb(173, 216, 230), rgb(173, 216, 230));
+            padding: 60px 0;
+        }
+
+        .wrap-login100 {
+            width: 360px;
+            background: #333;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .login100-form-title {
+            font-size: 24px;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .input100 {
+            font-size: 16px;
+            color: #fff;
+            background: #555;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+        }
+
+            .input100::placeholder {
+                color: #aaa;
+            }
+
+        .wrap-input100 {
+            margin-bottom: 20px;
+        }
+
+        .login100-form-btn {
+            font-size: 16px;
+            color: #fff;
+            background: #1a73e8;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+            .login100-form-btn:hover {
+                background: #0c5ec5;
+            }
+
+        .txt1 {
+            color: #ccc;
+        }
+
+        .txt2 {
+            color: #1a73e8;
+        }
+
+        .alert {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="limiter">
+        <div style=" background-color:lightslategrey" class="container-login100">
+            @if (ViewData["err"] != null)
+            {
+                <div class="alert alert-danger">
+                    @ViewData["err"]
+                </div>
+            }
+            @if (ViewData["success"] != null)
+            {
+                <div class="alert alert-success">
+                    @ViewData["success"]
+                </div>
+            }
+            <div class="wrap-login100">
+                @using (Html.BeginForm("Login", "Admin", FormMethod.Post))
+                {
+                    <span class="login100-form-title">
+                        Member Login
+                    </span>
+
+                    <div class="wrap-input100 validate-input" data-validate="Bạn chưa nhập tài khoản">
+                        <input class="input100" type="text" name="taikhoan" placeholder="UserName">
+
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Bạn chưa nhập mật khẩu">
+                        <input class="input100" type="password" name="password" placeholder="Password">
+
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <button type="submit" class="login100-form-btn">
+                            SignIn
+                        </button>
+                    </div>
+                    <div class="text-center p-t-12">
+                        <span class="txt1">
+                            Forgot
+                        </span>
+                        <a class="txt2" id="forgotPasswordLink" href="~/Admin/Forget">
+                            Password?
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!--===============================================================================================-->
+    <script src="~/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/vendor/bootstrap/js/popper.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/vendor/tilt/tilt.jquery.min.js"></script>
+    <script>
+        $('.js-tilt').tilt({
+            scale: 1.1
+        })
+    </script>
+    <!--===============================================================================================-->
+    <script src="~/js/main.js"></script>
+
+</body>
+</html>

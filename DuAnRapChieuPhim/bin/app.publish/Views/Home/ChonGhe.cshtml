@@ -1,0 +1,156 @@
+﻿@{ 
+    var user = Session["KH"] as DuAnRapChieuPhim.Models.ThongTinCaNhan;
+}
+
+@model IEnumerable<DuAnRapChieuPhim.Models.Ghe>
+<!DOCTYPE html>
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<link rel="stylesheet" href="~/Content/style2.css">
+<body>
+
+    <div class="movie-container">
+        <h1>MCT Box</h1>
+    </div>
+
+    <ul class="showcase">
+        <li>
+            <div class="seat">A0</div>
+            <small>Còn trống</small>
+        </li>
+        <li>
+            <div class="seat selected">A0</div>
+            <small>Đang chọn</small>
+        </li>
+        <li>
+            <div class="seat occupied">A0</div>
+            <small>Đã được chọn</small>
+        </li>
+    </ul>
+
+    <div class="container">
+        <div class="screen"></div>
+        @for (int i = 0; i < Model.Count(); i += 8)
+        {
+            <div class="row">
+
+                @for (int j = 0; j < 8; j++)
+                {
+                    var index = i + j;
+                    if (index < Model.Count())
+                    {
+                        var ghe = Model.ElementAt(index);
+                        if (ghe.TrangThai.Contains("Trống"))
+                        {
+                            <div class="seat " style="font-size: 12px; color: black; width: 22px; height: 20px;font-weight:bold" data-giatien="@ghe.GiaTien" data-ten="@ghe.MaGhe">@ghe.TenGhe</div>
+                        }
+                        else
+                        {
+                            <div class="seat occupied" style="font-size: 12px; color: black; width: 22px; height: 20px; font-weight: bold ">@ghe.TenGhe</div>
+                        }
+                    }
+                }
+
+            </div>
+
+        }
+    </div>
+    <div style="margin-bottom: 50px;">
+        <p class="text">
+            Bạn đã chọn <span class="span" id="count">0</span> chỗ ngồi. Tổng giá tiền là  :<span class="span" id="ss">0</span>
+        </p>
+    </div>
+    <center>
+        @if (user != null)
+        {
+           <a id="openbot" style="text-decoration: none; cursor: pointer;" onclick="redirectToCombo()">Nhấn để chuyển sang bước tiếp theo</a>
+        }
+        else
+        {
+            <a id="openbot" style=" text-decoration: none;" href="~/Home/Login">Nhấn để chuyển sang bước tiếp theo</a>
+        }
+    </center>
+    <script>
+        const container = document.querySelector(".container");
+        const seats = document.querySelectorAll(".row .seat:not(.occupied)");
+        let count = document.getElementById("count");
+
+        populateUI();
+
+        function setMovieData(movieIndex) {
+            localStorage.setItem("selectedMovieIndex", movieIndex);
+        }
+        window.selectedSeats = [];
+        function updateCountAndTotal() {
+            let selectedSeatsCount = document.querySelectorAll(".row .seat.selected");
+            count.innerHTML = selectedSeatsCount.length;
+            window.selectedSeats = Array.from(selectedSeatsCount).map(seat => seat.getAttribute("data-ten"));
+            // Tính tổng giá tiền
+            let totalGiaTien = 0;
+            selectedSeatsCount.forEach((seat) => {
+                // Lấy giá trị GiaTien từ thuộc tính data-giatien
+                let giatien = seat.getAttribute("data-giatien");
+                // Chuyển đổi giá trị thành số và cộng vào tổng giá tiền
+                totalGiaTien += parseFloat(giatien);
+            });
+
+            // Định dạng tổng giá tiền thành VND
+            let formattedTotal = new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+            }).format(totalGiaTien);
+            window.totalGiaTien = totalGiaTien;
+            // Hiển thị tổng giá tiền trong phần tử có id="ss"
+            document.getElementById("ss").innerHTML = formattedTotal;
+        }
+
+
+        function redirectToCombo() {
+            // Kiểm tra xem có giá trị totalGiaTien không
+            if (typeof window.totalGiaTien !== "undefined") {
+                // Chuyển hướng đến trang Combo và truyền giá trị totalGiaTien qua tham số URL
+                var selectedSeatsJson = JSON.stringify(window.selectedSeats);
+
+                // Encode chuỗi JSON để tránh lỗi khi truyền trong URL
+                var encodedSelectedSeats = encodeURIComponent(selectedSeatsJson);
+
+                // Chuyển hướng đến trang Combo và truyền giá trị totalGiaTien và danh sách các ghế
+                window.location.href = "Combo?totalGiaTien=" + window.totalGiaTien + "&selectedSeats=" + encodedSelectedSeats;
+            } else {
+                // Nếu totalGiaTien không tồn tại, có thể xử lý theo nhu cầu của bạn
+                alert("Vui lòng chọn ghế trước khi chuyển đến Combo.");
+            }
+        }
+
+        function populateUI() {
+
+            const selectedSeats = JSON.parse(localStorage.getItem("seatIndex"));
+
+            if (selectedSeats !== null && selectedSeats.length > 0) {
+
+                seats.forEach((seat, index) => {
+
+                    if (selectedSeats.indexOf(index) > -1) {
+                        seat.classList.add("selected");
+                    }
+                });
+            }
+
+        }
+
+
+        container.addEventListener("click", (e) => {
+            if (
+                e.target.classList.contains("seat") &&
+                !e.target.classList.contains("occupied")
+            ) {
+
+                e.target.classList.toggle("selected");
+
+                updateCountAndTotal();
+            }
+        });
+        updateCountAndTotal();
+
+    </script>
+
+</body>

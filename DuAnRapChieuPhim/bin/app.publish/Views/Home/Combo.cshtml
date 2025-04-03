@@ -1,0 +1,250 @@
+﻿@{
+    ViewBag.Title = "Combo";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+@model IEnumerable<DuAnRapChieuPhim.Models.Combo>
+
+<style>
+
+    .seat-names {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .seat-name {
+        margin-right: 10px; /* Khoảng cách giữa các tên ghế */
+    }
+    /* Thêm CSS để màu chữ luôn là màu đen */
+    .card-title,
+    .card-text,
+    .text-right {
+        color: black !important;
+    }
+    .button1:hover {
+        background: #333; /* Màu nền khi di chuột qua */
+    }
+
+    .button1 {
+        padding: 0;
+        margin: 0;
+        color: #000; /* Màu chữ đen */
+        border-style: none;
+        touch-action: manipulation;
+        display: inline-block;
+        border: none;
+        background: #808080;
+        cursor: pointer;
+    }
+    /* End Reset for the demo */
+
+    /* Sass Config */
+    $btn_grey: #575757; /* Contrast : 7.2:1 */
+    /* End Sass Config */
+    .qty {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        text-align: center;
+    }
+        label{
+        flex: 1 0 100%;
+    }
+
+    input {
+        width: 7rem;
+        height: 3rem;
+        font-size: 1.3rem;
+        text-align: center;
+        border: 1px solid #000000;
+        color: #000; /* Màu chữ đen */
+    }
+
+    .button1 {
+        width: 3rem;
+        height: 3rem;
+        color: #fff;
+        font-size: 2rem;
+        background: #000000;
+
+    }
+
+        button.qtyminus {
+            margin-right: 0.3rem;
+        }
+
+        button.qtyplus {
+            margin-left: 0.3rem;
+        }
+
+
+
+</style>
+
+<div class="container" style="margin-top: 6rem;">
+    <h2>Vui lòng lựa chọn combo</h2>
+    <div class="row">
+        @foreach (var combo in Model)
+        {
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="~/IMG/@combo.HinhAnh" class="card-img" alt="Combo Image">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">@combo.TenCB</h5>
+                                <p class="card-text">@combo.MoTa</p>
+                                <p class="text-right">Giá: @String.Format("{0:#,##0} VND", combo.Gia)</p>
+                                <form action="">
+                                    <p class="qty">
+                                        <label for="qty" style="color:black">Quantity:</label>
+                                        <button class="button1 qtyminus"  aria-hidden="true" onclick="decreaseQuantity('@combo.MaCB', event)">&minus;</button>
+                                        <input type="number" name="qty" id="qty-@combo.MaCB" data-giatien="@combo.Gia" min="0" max="10" step="1" value="0" style="color:black">
+                                        <button class="button1 qtyplus" aria-hidden="true" onclick="increaseQuantity('@combo.MaCB', event)">&plus;</button>
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="mt-4">
+        <h3>Số ghế đã chọn: <span id="selectedSeatCount" class="badge badge-secondary">@ViewBag.SeatNames.Count</span></h3>
+        <h3>
+            Tên các ghế đã chọn:
+            <div class="seat-names">
+                @foreach (var seatName in ViewBag.SeatNames)
+                {
+                    <span class="seat-name">@seatName</span>
+                }
+            </div>
+        </h3>
+        </h3>
+
+        <h3>Tổng tiền vé: <span id="totalTicketPrice" class="badge badge-success">@String.Format("{0:#,##0}", ViewBag.TienGhe) VND</span></h3>
+        <h3>Tiền combo: <span id="comboPrice" class="badge badge-primary">0 VND</span></h3>
+        <h3>Tổng tiền: <span id="totalPrice" class="badge badge-danger">@String.Format("{0:#,##0}", ViewBag.TienGhe) VND</span></h3>
+        <button class="btn btn-custom custom-button" onclick="sendDataToServer()" style="width:100px;">Thanh toán</button>
+    </div>
+</div>
+<script>
+    var selectedCombos = [];
+    function sendDataToServer() {
+    // Serialize dữ liệu thành một chuỗi JSON
+    var serializedData = JSON.stringify(selectedCombos);
+
+    // Tạo URL với dữ liệu trên query string
+    var url = '@Url.Action("ThanhToanQuaThe", "Home")' + '?selectedCombos=' + encodeURIComponent(serializedData);
+
+    // Chuyển hướng đến URL được tạo
+    window.location.href = url;
+}
+
+
+    function increaseQuantity(comboId, event) {
+        event.preventDefault();
+
+        var qtyInput = document.getElementById('qty-' + comboId);
+        var currentQty = parseInt(qtyInput.value, 10);
+
+
+        var selectedComboIndex = selectedCombos.findIndex(c => c.MaCB === comboId);
+
+        if (currentQty >= 0) {
+            // Nếu có trong danh sách, cập nhật số lượng
+            if (selectedComboIndex !== -1) {
+                selectedCombos[selectedComboIndex].SoLuong = currentQty+1;
+            } else {
+                // Nếu chưa có, thêm mới vào danh sách
+                selectedCombos.push({ MaCB: comboId, SoLuong: currentQty + 1 });
+            }
+        } else {
+            // Nếu số lượng là 0, loại bỏ combo khỏi danh sách
+            if (selectedComboIndex !== -1) {
+                selectedCombos.splice(selectedComboIndex, 1);
+            }
+        }
+        for (var combo of selectedCombos) {
+            console.log("Mã: " + combo.MaCB + ", Số lượng: " + combo.SoLuong);
+        }
+
+        if (currentQty < 10) {
+            qtyInput.value = currentQty + 1;
+            updateComboPrice(comboId, currentQty + 1);
+        }
+    }
+
+    function decreaseQuantity(comboId, event) {
+        event.preventDefault();
+
+        var qtyInput = document.getElementById('qty-' + comboId);
+        var currentQty = parseInt(qtyInput.value, 10);
+        var selectedComboIndex = selectedCombos.findIndex(c => c.MaCB === comboId);
+
+        if (currentQty > 1) {
+            // Nếu có trong danh sách, cập nhật số lượng
+            if (selectedComboIndex !== -1) {
+                selectedCombos[selectedComboIndex].SoLuong = currentQty-1;
+            } else {
+                // Nếu chưa có, thêm mới vào danh sách
+                selectedCombos.push({ MaCB: comboId, SoLuong: currentQty-1 });
+            }
+        } else {
+            // Nếu số lượng là 0, loại bỏ combo khỏi danh sách
+            if (selectedComboIndex !== -1) {
+                selectedCombos.splice(selectedComboIndex, 1);
+            }
+        }
+        for (var combo of selectedCombos) {
+            console.log("Mã: " + combo.MaCB + ", Số lượng: " + combo.SoLuong);
+        }
+        if (currentQty > 0) {
+            qtyInput.value = currentQty - 1;
+            updateComboPricedown(comboId, currentQty - 1);
+        }
+    }
+    window.totalComboPrice = 0;
+    function updateComboPrice(comboId) {
+        // Lấy giá combo từ data-giatien
+        var comboPrice = parseFloat(document.getElementById('qty-' + comboId).getAttribute('data-giatien'));
+
+        // Tính tổng giá tiền combo
+
+        window.totalComboPrice = totalComboPrice + comboPrice;
+        var tong = window.totalComboPrice +  @ViewBag.TienGhe;
+        // Hiển thị tổng giá tiền combo
+        var formattedTotalComboPrice = new Intl.NumberFormat("vi-VN", {
+            style: "currency",
+            currency: "VND",
+        }).format(window.totalComboPrice);
+        var formattedTotalPrice = new Intl.NumberFormat("vi-VN", {
+            style: "currency",
+            currency: "VND",
+        }).format(tong);
+        document.getElementById("comboPrice").innerHTML = formattedTotalComboPrice;
+        document.getElementById("totalPrice").innerHTML = formattedTotalPrice;
+    }
+    function updateComboPricedown(comboId) {
+        // Lấy giá combo từ data-giatien
+        var comboPrice = parseFloat(document.getElementById('qty-' + comboId).getAttribute('data-giatien'));
+
+        // Tính tổng giá tiền combo
+
+        window.totalComboPrice = totalComboPrice - comboPrice;
+                var tong = window.totalComboPrice + @ViewBag.TienGhe;
+        // Hiển thị tổng giá tiền combo
+        var formattedTotalComboPrice = new Intl.NumberFormat("vi-VN", {
+            style: "currency",
+            currency: "VND",
+        }).format(window.totalComboPrice);
+        var formattedTotalPrice = new Intl.NumberFormat("vi-VN", {
+            style: "currency",
+            currency: "VND",
+        }).format(tong);
+        document.getElementById("comboPrice").innerHTML = formattedTotalComboPrice;
+        document.getElementById("totalPrice").innerHTML = formattedTotalPrice;
+    }
+</script>

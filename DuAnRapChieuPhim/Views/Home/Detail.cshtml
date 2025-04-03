@@ -1,0 +1,624 @@
+﻿@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/Layout.cshtml";
+    var currentDate = DateTime.Now.Date;
+    var user = Session["KH"] as DuAnRapChieuPhim.Models.ThongTinCaNhan;
+}
+@model DuAnRapChieuPhim.Models.Phim
+<link rel="stylesheet" href="~/Content/Detail.css">
+<style>
+    .be-comment-block {
+        margin-bottom: 50px !important;
+        border: 1px solid #edeff2;
+        border-radius: 2px;
+        padding: 50px 70px;
+        border: 1px solid #ffffff;
+    }
+
+    .comments-title {
+        font-size: 16px;
+        color: #f6f6f7;
+        margin-bottom: 15px;
+        font-family: 'Conv_helveticaneuecyr-bold';
+    }
+
+    .be-img-comment {
+        width: 60px;
+        height: 60px;
+        float: left;
+        margin-bottom: 15px;
+    }
+
+    .custom-button {
+        color: black;
+    }
+
+    .be-ava-comment {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+    }
+
+    .be-comment-content {
+        margin-left: 80px;
+    }
+
+        .be-comment-content span {
+            display: inline-block;
+            width: 49%;
+            margin-bottom: 15px;
+        }
+
+    .be-comment-name {
+        font-size: 13px;
+        font-family: 'Conv_helveticaneuecyr-bold';
+    }
+
+    .be-comment-content a {
+        color: #ffffff;
+    }
+
+    .be-comment-content span {
+        display: inline-block;
+        width: 49%;
+        margin-bottom: 15px;
+    }
+
+    .be-comment-time {
+        text-align: right;
+    }
+
+    .be-comment-time {
+        font-size: 11px;
+        color: #b4b7c1;
+    }
+
+    .be-comment-text {
+        font-size: 13px;
+        line-height: 18px;
+        color: #7a8192;
+        display: block;
+        background: #f6f6f7;
+        border: 1px solid #edeff2;
+        padding: 15px 20px 20px 20px;
+    }
+
+    .form-group.fl_icon .icon {
+        position: absolute;
+        top: 1px;
+        left: 16px;
+        width: 48px;
+        height: 48px;
+        background: #f6f6f7;
+        color: #b5b8c2;
+        text-align: center;
+        line-height: 50px;
+        -webkit-border-top-left-radius: 2px;
+        -webkit-border-bottom-left-radius: 2px;
+        -moz-border-radius-topleft: 2px;
+        -moz-border-radius-bottomleft: 2px;
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+    }
+
+    .form-group .form-input {
+        font-size: 13px;
+        line-height: 50px;
+        font-weight: 400;
+        color: #b4b7c1;
+        width: 100%;
+        height: 50px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border: 1px solid #edeff2;
+        border-radius: 3px;
+    }
+
+    .form-group.fl_icon .form-input {
+        padding-left: 70px;
+    }
+
+    .form-group textarea.form-input {
+        height: 150px;
+    }
+
+    .custom-modal {
+        background-color: #000; /* Màu đen */
+        color: white; /* Màu chữ trắng */
+    }
+
+        .custom-modal .modal-content {
+            background-color: transparent; /* Background mờ */
+            border: none; /* Loại bỏ đường viền */
+        }
+
+        .custom-modal .modal-header,
+        .custom-modal .modal-footer {
+            border-bottom: none; /* Loại bỏ đường viền phía dưới header và phía trên footer */
+        }
+
+        .custom-modal .btn-date,
+        .custom-modal .btn-time {
+            color: #000; /* Màu chữ đen cho nút ngày và thời gian */
+        }
+
+    .btn-date, .btn-time {
+        /* Thêm các thuộc tính CSS cho button ngày và thời gian tại đây */
+        background-color: #fff; /* Màu nền */
+        color: #000; /* Màu chữ */
+        border: 1px solid #ccc; /* Viền */
+        padding: 10px; /* Kích thước lề và padding */
+        margin: 5px; /* Kích thước lề và padding */
+        border-radius: 5px; /* Độ cong góc */
+        cursor: pointer; /* Con trỏ chuột */
+    }
+
+        .btn-date:hover {
+            /* Thêm các thuộc tính CSS cho trạng thái hover của button tại đây */
+            background-color: #ddd; /* Màu nền khi hover */
+            transform: scale(1.1); /* Tăng kích thước 10% khi hover */
+            transition: transform 0.3s ease; /* Thêm hiệu ứng chuyển động */
+        }
+
+        .btn-time:hover {
+            background-color: #ddd; /* Màu nền khi hover */ /* Tăng kích thước 10% khi hover */
+        }
+
+    .search-box {
+        width: fit-content;
+        height: fit-content;
+        position: relative;
+    }
+
+    .input-search {
+        height: 50px;
+        width: 50px;
+        border-style: none;
+        padding: 10px;
+        font-size: 18px;
+        letter-spacing: 2px;
+        outline: none;
+        border-radius: 25px;
+        transition: all .5s ease-in-out;
+        background-color: #000000;
+        padding-right: 40px;
+        color: #fff;
+    }
+
+        .input-search::placeholder {
+            color: rgba(255,255,255,.5);
+            font-size: 18px;
+            letter-spacing: 2px;
+            font-weight: 100;
+        }
+
+    .btn-search {
+        width: 50px;
+        height: 50px;
+        border-style: none;
+        font-size: 20px;
+        font-weight: bold;
+        outline: none;
+        cursor: pointer;
+        border-radius: 50%;
+        position: absolute;
+        right: 0px;
+        color: #ffffff;
+        background-color: transparent;
+        pointer-events: painted;
+    }
+
+        .btn-search:focus ~ .input-search {
+            width: 300px;
+            border-radius: 0px;
+            background-color: transparent;
+            border-bottom: 1px solid rgba(255,255,255,.5);
+            transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+        }
+
+    .input-search:focus {
+        width: 300px;
+        border-radius: 0px;
+        background-color: transparent;
+        border-bottom: 1px solid rgba(255,255,255,.5);
+        transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+    }
+
+    select {
+        /* Reset Select */
+        appearance: none;
+        outline: 10px red;
+        border: 0;
+        box-shadow: none;
+        /* Personalize */
+        flex: 1;
+        padding: 0 1em;
+        color: #fff;
+        background-color: #000000;
+        background-image: none;
+        cursor: pointer;
+    }
+        /* Remove IE arrow */
+        select::-ms-expand {
+            display: none;
+        }
+    /* Custom Select wrapper */
+    .select {
+        position: relative;
+        display: flex;
+        width: 20em;
+        height: 3em;
+        border-radius: .25em;
+        overflow: hidden;
+    }
+        /* Arrow */
+        .select::after {
+            content: '\25BC';
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 1em;
+            background-color: #34495e;
+            transition: .25s all ease;
+            pointer-events: none;
+        }
+        /* Transition */
+        .select:hover::after {
+            color: #f39c12;
+        }
+
+    /* danh gia sao */
+    .rating {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .stars {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-start;
+        margin-right: 90%;
+    }
+
+        .stars input[type="radio"] {
+            display: none;
+        }
+
+        .stars label {
+            font-size: 24px;
+            color: #ffd700;
+            cursor: pointer;
+        }
+
+            .stars label:hover,
+            .stars label:hover ~ label,
+            .stars input[type="radio"]:checked ~ label {
+                color: red;
+            }
+
+    .be-comment-rating {
+        display: inline-flex; /* Hiển thị sao theo hàng ngang */
+        margin: 0; /* Loại bỏ khoảng cách thừa */
+        padding: 0; /* Loại bỏ khoảng cách thừa */
+    }
+
+        .be-comment-rating span {
+            margin-right: -2px; /* Điều chỉnh khoảng cách giữa các sao, giá trị âm giúp các sao sát lại với nhau */
+        }
+    /* like,dislike */
+    .be-comment-vote {
+        display: flex;
+        
+        justify-content: flex-start;
+        margin-right: 85%;
+    }
+
+    .be-comment{
+        padding:20px 0px 20px 0px;
+    }
+</style>
+
+<div class="custom-container">
+    <div class="container-inner">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="~/IMG/@Model.AnhBia" alt="Poster phim" class="img-fluid animate__animated animate__zoomIn" style="height: auto;"> <!-- Thêm hiệu ứng zoomIn từ Animate.css -->
+            </div>
+            <div class="col-md-8 details-right">
+                <h1 style=" font-weight: bolder;" class="mt-0">@Model.TenPhim</h1>
+                <p class="lead input-icon uil-postcard"> @Model.TheLoai</p>
+                <p class="lead input-icon uil-clock-nine"> @Model.ThoiLuong'</p>
+                <p class="lead input-icon uil-globe"> @Model.NgonNgu</p>
+                <p class="lead input-icon uil-schedule">@Model.Tuoi+ (Phim dành cho khán giả từ đủ @Model.Tuoi tuổi trở lên)</p>
+
+                <h3 style=" margin-top:50px; font-weight: bolder;">MÔ TẢ</h3>
+                <p style=" font-size: 15px; " class="lead">Đạo diễn : @Model.DaoDien</p>
+                <p style=" font-size: 15px; " class="lead">Diễn viên : @Model.DienVien</p>
+                <p style=" font-size: 15px; " class="lead">Khởi chiếu : @Model.NgayRaMat </p>
+
+
+
+
+
+
+
+                <input type="hidden" name="maPhim" value="@Model.MaPhim" />
+
+                <div class="mt-3" style="text-align: center;">
+                    <!-- Sử dụng thuộc tính style để điều chỉnh vị trí của nút -->
+                    <button class="btn btn-custom custom-button input-icon uil-ticket" data-toggle="modal" data-target="#bookingModal" data-phimid="@Model.MaPhim">Đặt Vé</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-4">
+    <!-- Container cho video và tiêu đề -->
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-3 input-icon uil-youtube" ">Nội Dung Phim</h2>
+            <p style=" font-size: 15px; " class="lead">@Model.NoiDung</p>
+            <h2 class="mb-3 input-icon uil-youtube" style="text-align: center;  ">Trailer Phim</h2>
+            <div class="video-container">
+                <!-- Mã nhúng video từ YouTube -->
+                <iframe src="@Model.Video" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <h2 class="mb-3 input-icon uil-comment  ">Bình Luận</h2>
+</div>
+
+<!-- Binh luan -->
+
+<div class="be-comment-block">
+    
+    @foreach (var bl in ViewBag.BL)
+    {
+        if (bl != null)
+        {
+            <div class="be-comment">
+                <div class="be-img-comment">
+                    <a href="blog-detail-2.html">
+                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
+                    </a>
+                </div>
+                <div class="be-comment-content">
+                    <span class="be-comment-name">
+                        <a href="blog-detail-2.html">@bl.ThongTinCaNhan.Ten</a>
+                    </span>
+                    <span class="be-comment-time">
+                        <i class="fa fa-clock-o"></i>
+                        @bl.ThoiGian
+                    </span>
+                    <div class="be-comment-rating">
+                        @if (bl.DanhGia != null)
+                        {
+                            int danhGia = bl.DanhGia ?? 0;
+                            for (int i = 0; i < danhGia; i++)
+                            {
+                                <span style="color: #ffd700;">★</span>
+                            }
+                            for (int i = danhGia; i < 5; i++)
+                            {
+                                <span style="color: #ddd;">★</span>
+                            }
+                        }
+                        else
+                        {
+                            <span>No rating</span>
+                        }
+                    </div>
+
+                    <p class="be-comment-text">
+                        @bl.NoiDung
+                    </p>
+
+                    <div class="be-comment-vote">
+                        <form method="post" action="@Url.Action("LikeComment")">
+                            <input type="hidden" name="maBL" value="@bl.MaBL" />
+                            <button style="background-color:transparent" type="submit">👍</button>
+                        </form>
+                        <span style="font-size:initial">@bl.SoluongLike</span>
+
+                        <form method="post" action="@Url.Action("DislikeComment")">
+                            <input type="hidden" name="maBL" value="@bl.MaBL" />
+                            <button style="background-color:transparent" type="submit">👎</button>
+                        </form>
+                        <span style="font-size:initial">@bl.SoluongDislike</span>
+                    </div>
+
+
+                </div>
+            </div>
+        }
+    }
+
+    <!-- Form bình luận -->
+<form class="form-block" method="post" action="@Url.Action("ThemBinhLuan", "Home")">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            <h3>Bình luận mới</h3>
+        </div>
+        <div class="col-xs-12">
+            <div class="form-group">
+                <input type="hidden" name="maPhim" value="@Model.MaPhim" />
+                <textarea name="noiDung" class="form-input" required="" placeholder="Nhập bình luận của bạn tại đây"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Đánh giá:</label>
+        <div class="stars">
+            <input type="radio" name="danhGia" id="star5" value="5"><label for="star5">★</label>
+            <input type="radio" name="danhGia" id="star4" value="4"><label for="star4">★</label>
+            <input type="radio" name="danhGia" id="star3" value="3"><label for="star3">★</label>
+            <input type="radio" name="danhGia" id="star2" value="2"><label for="star2">★</label>
+            <input type="radio" name="danhGia" id="star1" value="1"><label for="star1">★</label>
+            <input type="radio" name="danhGia" id="star0" value="0" checked style="display: none;">
+        </div>
+    </div>
+
+    @if (user != null)
+    {
+        <button type="submit" class="btn btn-custom custom-button btn-primary pull-right">Gửi</button>
+    }
+    else
+    {
+        <a class="btn btn-custom custom-button btn-primary pull-right" href="~/Home/Login">Gửi</a>
+    }
+</form>
+</div>
+
+
+
+
+
+<div style="background-size:100%;background-image: url(https://images.saymedia-content.com/.image/t_share/MTk3MzA0NjU1MjM4MTQ2MDQz/can-movies-make-you-sick-movie-theatre-sickness.png)" class="modal fade custom-modal" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <h1 style="text-align:center">LỊCH CHIẾU</h1>
+        <div class="modal-content">
+            <div class="modal-header">
+                <input type="hidden" id="maPhimInput" name="maPhim" value="@Model.MaPhim" />
+
+                <div class="row">
+                    <!-- Sử dụng vòng lặp để tạo 30 ngày -->
+                    <!-- Sử dụng các class của Bootstrap để làm cho nút trông đẹp hơn -->
+                    @for (int i = 0; i < 30; i++)
+                    {
+
+                        <div class="col-md-1 mb-3">
+                            <button class="btn-date" data-ngay="@i">@currentDate.ToString("dd/MM")</button>
+                        </div>
+                        currentDate = currentDate.AddDays(1);
+                    }
+                </div>
+            </div>
+            <div class="modal-body">
+                <!-- Phần đầu - Dữ liệu ngày -->
+                <!-- Phần giữa - Mô tả ngôn ngữ tiếng Anh -->
+  
+                <div id="RapChieu"></div>
+                <!-- Phần cuối - Khung thời gian -->
+
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <!-- Sử dụng vòng lặp để tạo các khung thời gian -->
+                    <!-- Sử dụng các class của Bootstrap để làm cho nút trông đẹp hơn -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function handleTimeButtonClick(maPhongInputId) {
+        // Chuyển hướng đến URL action với thời gian được chọn
+        var maPhim = document.getElementById('maPhimInput').value;
+        // Chuyển hướng đến action ChonGhe với tham số maPhim
+        window.location.href = '/Home/ChonGhe?id=' + encodeURIComponent(maPhim) + '&MaChieuPhim=' + encodeURIComponent(maPhongInputId);
+
+    }
+
+    // Hàm xử lý khi người dùng nhấp vào button ngày
+    function handleDateButtonClick(phimId, ngayChieu) {
+        $("#NgonNgu").empty();
+        $("#RapChieu").empty(); // Xóa nội dung cũ
+        $('#bookingModal .modal-footer .row').empty(); // Xóa nút thời gian cũ
+
+        $.ajax({
+            url: "/Home/GetDetails", // Thay đổi Controller nếu cần
+            type: "GET",
+            data: { phimId: phimId, ngayChieu: ngayChieu },
+            success: function (data) {
+                console.log(data);
+                var ngonNgu = data.ngonNgu || "Hiện không có suất chiếu nào!";
+                var rapChieuTimes = data.rapChieuTimes; // Danh sách các rạp chiếu và thời gian chiếu
+
+                // Hiển thị danh sách các rạp chiếu và thời gian chiếu theo từng rạp
+                if (rapChieuTimes.length > 0) {
+                    var rapChieuHtml = "";
+                    rapChieuTimes.forEach(function (rap) {
+                        rapChieuHtml += "<div class='rap-chieu-container'>"; // Container cho mỗi rạp chiếu
+                        rapChieuHtml += "<div class='rap-name'><h5>" + rap.RapChieu + "</h5></div>"; // Tên rạp chiếu
+
+                        var timeHtml = "<ul>";
+                        rap.GioChieuList.forEach(function (time) {
+                            var formattedGio = time.hours.toString().padStart(2, '0');
+                            var formattedPhut = time.minutes.toString().padStart(2, '0');
+                            var timeString = formattedGio + ":" + formattedPhut;
+                            timeHtml += "<li><button class='btn-outline-light btn-time' value='" + time.MaChieuPhim + "'>" + timeString + "</button></li>";
+                        });
+                        timeHtml += "</ul>";
+                        rapChieuHtml += "<div class='time-container'>" + timeHtml + "</div>"; // Thời gian chiếu
+                        rapChieuHtml += "</div>"; // Kết thúc container mỗi rạp chiếu
+                    });
+                    $("#RapChieu").html(rapChieuHtml);
+                } else {
+                    $("#RapChieu").text("Không có suất chiếu nào.");
+                }
+
+                // Hiển thị modal
+                $("#bookingModal").modal("show");
+
+                // Gắn sự kiện cho các nút thời gian (nếu chưa được gắn)
+                $(".btn-time").on("click", function () {
+                    handleTimeButtonClick($(this).val());
+                });
+            },
+            error: function () {
+                console.log("Error while retrieving data");
+            }
+        });
+    }
+
+
+
+    // Gắn sự kiện cho tất cả các button ngày
+    $(".btn-date").on("click", function () {
+        var phimId = $("input[name='maPhim']").val();
+        var ngayChieu = $(this).attr("data-ngay");
+       
+        handleDateButtonClick(phimId, ngayChieu);
+    });
+
+    // Gắn sự kiện cho nút .btn-datve
+    $(".btn-datve").on("click", function () {
+        // Xử lý AJAX tại đây (nếu cần)
+        var phimId = $(this).data("phimid");
+        handleDateButtonClick(phimId);
+    });
+
+    $(".btn-search").on("click", function () {
+        var searchQuery = $(".input-search").val();
+        var theLoaiId = $("#theLoaiDropdown").val();
+        window.location.href = '/Home/TimKiem?searchQuery=' + searchQuery + '&trangThai=Sắp chiếu' + '&theLoaiId=' + theLoaiId;
+    });
+</script>
+<style>
+    /* Custom CSS */
+    .rap-chieu-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+        .rap-chieu-container h5 {
+            margin-right: 20px;
+        }
+
+        .rap-chieu-container ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+            .rap-chieu-container ul li {
+                margin: 5px 0;
+            }
+
+    .btn-time {
+        margin: 5px;
+    }
+</style>

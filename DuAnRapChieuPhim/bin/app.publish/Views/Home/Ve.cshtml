@@ -1,0 +1,59 @@
+﻿@model IPagedList<DuAnRapChieuPhim.Models.HoaDon>
+@using PagedList
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Ve";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #000;
+        color: white;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <h2 style="color: white; font-weight:bold" >Danh sách hóa đơn</h2>
+
+        <form>
+
+            <table class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Họ Tên</th>
+                        <th scope="col">Số Điện Thoại</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Mã KH</th>
+                        <th scope="col">Trạng Thái</th>
+                        <th scope="col">Tiền Vé</th>
+                        <th scope="col">Tiền Combo</th>
+                        <th scope="col">Tổng Tiền</th>
+                        <th scope="col">Ngày Đặt</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.HoTen</td>
+                            <td>@item.SoDienThoai</td>
+                            <td>@item.Email</td>
+                            <td>@item.MaKH</td>
+                            <td>@item.TrangThai</td>
+                            <td>@item.TienVe</td>
+                            <td>@item.TienCombo</td>
+                            <td>@item.TongTien</td>
+                            <td>@item.NgayDat</td>
+                            <td>
+                                <a href="@Url.Action("DetailsHD", new { id = item.MaHoaDon })" style="color: white;">Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>

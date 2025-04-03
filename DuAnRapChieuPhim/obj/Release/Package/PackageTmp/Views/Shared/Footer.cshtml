@@ -1,0 +1,102 @@
+﻿@using DuAnRapChieuPhim.Helpers
+
+<hr />
+<footer id="foo">
+    <div class="footer-section">
+        <div class="footer">
+            <div class="container-fluid">
+                <div class="col-md-4 footer-four">
+                    <h2>@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("fbuser")</h2>
+                    <form method="post" action="/Home/SubmitFeedback">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("fbname"):</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("fbemail"):</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("feedback"):</label>
+                            <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("fbbtn")</button>
+                    </form>
+                </div>
+
+
+
+
+                <div style=" text-align:center;" class="col-md-8">
+                    <a class="fb-icon" href="https://www.facebook.com/">
+                        <img loading="lazy" src="~/IMG/fb.png" />
+                        <span class="txt">
+                            FACEBOOK
+                        </span>
+                    </a>
+                    <a class="zl-icon" href="https://www.facebook.com/">
+                        <img loading="lazy" src="~/IMG/zl.png" />
+                        <span class="txt">
+                            ZALO
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="col-md-4 footer-one">
+                <div class="foot-logo">
+                    <img style="width:50%" src="~/IMG/cinemaa.png">
+                </div>
+
+                <p>
+                    @DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("ft1")
+                </p>
+                <div class="social-icons">
+
+                </div>
+            </div>
+            <div class="col-md-2 footer-two">
+                <h5>@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("ft2")</h5>
+                <ul>
+                    <li><a href="@LocalizationHelper.LocalizedAction("Index", "Home")">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav1")</a> </li>
+                    <li><a href="@LocalizationHelper.LocalizedAction("MovieShow", "Home")">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav2_1")</a> </li>
+                    <li><a href="@LocalizationHelper.LocalizedAction("MovieShoone", "Home")">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav2_2")</a> </li>
+                    <li><a href="@LocalizationHelper.LocalizedAction("News", "Home") ">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav3") </a> </li>
+                    <li><a href="~/Home/Login">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav5")</a> </li>
+                </ul>
+
+            </div>
+            <div class="col-md-2 footer-three">
+                <h5>@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("ft3")</h5>
+                <ul>
+                    <li><a href="https://www.facebook.com/"> FACEBOOK</a> </li>
+                    <li><a href="https://www.instagram.com/"> INSTAGRAM</a> </li>
+                    <li><a href="https://www.youtube.com/"> YOUTUBE</a> </li>
+                    <li><a href="https://www.google.com/intl/vi/gmail/about/"> GMAIL</a> </li>
+                </ul>
+
+            </div>
+            <div class="col-md-4 footer-four">
+                <h5>@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("ft4")</h5>
+                <ul>
+                    <li><i class="fa fa-map-marker"></i>475A Điện Biên Phủ, P.25, Q.Bình Thạnh, TP.HCM </li>
+                    <li><i class="fa fa-envelope-o"></i>cinema123@gmail.com </li>
+                    <li><i class="fa fa-phone"></i>1900.9999 </li>
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="col-sm-12 ">
+            <div class="copyright-text">
+                <p>CopyRight © 2024 TRUONG THANH SANG & PHAM NGOC THIEN </p>
+            </div>
+        </div>
+
+    </div>
+</footer>
+

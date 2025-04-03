@@ -1,0 +1,216 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|d:\\tai_lieu\\dacs\\dacn_movie_8\\duanrapchieuphim\\areas\\admin\\views\\admin\\movie.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|solutionrelative:duanrapchieuphim\\areas\\admin\\views\\admin\\movie.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\duanrapchieuphim\\views\\home\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|solutionrelative:duanrapchieuphim\\views\\home\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\duanrapchieuphim\\areas\\admin\\views\\admin\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|solutionrelative:duanrapchieuphim\\areas\\admin\\views\\admin\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\duanrapchieuphim\\areas\\admin\\views\\admin\\voucher.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|solutionrelative:duanrapchieuphim\\areas\\admin\\views\\admin\\voucher.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\duanrapchieuphim\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|solutionrelative:duanrapchieuphim\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\duanrapchieuphim\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|solutionrelative:duanrapchieuphim\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\duanrapchieuphim\\views\\shared\\navigation.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|solutionrelative:duanrapchieuphim\\views\\shared\\navigation.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\duanrapchieuphim\\views\\shared\\layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|solutionrelative:duanrapchieuphim\\views\\shared\\layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\duanrapchieuphim\\app_start\\startup.auth.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|solutionrelative:duanrapchieuphim\\app_start\\startup.auth.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\duanrapchieuphim\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB9752E0-18F6-4B80-B79A-DAA9C963A976}|DuAnRapChieuPhim\\DuAnRapChieuPhim.csproj|solutionrelative:duanrapchieuphim\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Movie.cshtml",
+              "DocumentMoniker": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\Areas\\Admin\\Views\\Admin\\Movie.cshtml",
+              "RelativeDocumentMoniker": "DuAnRapChieuPhim\\Areas\\Admin\\Views\\Admin\\Movie.cshtml",
+              "ToolTip": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\Areas\\Admin\\Views\\Admin\\Movie.cshtml",
+              "RelativeToolTip": "DuAnRapChieuPhim\\Areas\\Admin\\Views\\Admin\\Movie.cshtml",
+              "ViewState": "AQIAAGMAAAAAAAAAAAAAAIIAAABUAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-18T17:24:54.009Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\Areas\\Admin\\Views\\Admin\\Index.cshtml",
+              "RelativeDocumentMoniker": "DuAnRapChieuPhim\\Areas\\Admin\\Views\\Admin\\Index.cshtml",
+              "ToolTip": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\Areas\\Admin\\Views\\Admin\\Index.cshtml",
+              "RelativeToolTip": "DuAnRapChieuPhim\\Areas\\Admin\\Views\\Admin\\Index.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-13T09:34:36.394Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Voucher.cshtml",
+              "DocumentMoniker": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\Areas\\Admin\\Views\\Admin\\Voucher.cshtml",
+              "RelativeDocumentMoniker": "DuAnRapChieuPhim\\Areas\\Admin\\Views\\Admin\\Voucher.cshtml",
+              "ToolTip": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\Areas\\Admin\\Views\\Admin\\Voucher.cshtml",
+              "RelativeToolTip": "DuAnRapChieuPhim\\Areas\\Admin\\Views\\Admin\\Voucher.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACUAAAATAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-09T16:06:49.706Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Navigation.cshtml",
+              "DocumentMoniker": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\Views\\Shared\\Navigation.cshtml",
+              "RelativeDocumentMoniker": "DuAnRapChieuPhim\\Views\\Shared\\Navigation.cshtml",
+              "ToolTip": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\Views\\Shared\\Navigation.cshtml",
+              "RelativeToolTip": "DuAnRapChieuPhim\\Views\\Shared\\Navigation.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-09T14:52:12.794Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Layout.cshtml",
+              "DocumentMoniker": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\Views\\Shared\\Layout.cshtml",
+              "RelativeDocumentMoniker": "DuAnRapChieuPhim\\Views\\Shared\\Layout.cshtml",
+              "ToolTip": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\Views\\Shared\\Layout.cshtml",
+              "RelativeToolTip": "DuAnRapChieuPhim\\Views\\Shared\\Layout.cshtml",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-09T14:52:07.58Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Startup.cs",
+              "DocumentMoniker": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\Startup.cs",
+              "RelativeDocumentMoniker": "DuAnRapChieuPhim\\Startup.cs",
+              "ToolTip": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\Startup.cs",
+              "RelativeToolTip": "DuAnRapChieuPhim\\Startup.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-09T14:17:24.074Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Web.config",
+              "DocumentMoniker": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\Web.config",
+              "RelativeDocumentMoniker": "DuAnRapChieuPhim\\Web.config",
+              "ToolTip": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\Web.config",
+              "RelativeToolTip": "DuAnRapChieuPhim\\Web.config",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAABKAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2024-12-09T13:59:45.159Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\Views\\Home\\Login.cshtml",
+              "RelativeDocumentMoniker": "DuAnRapChieuPhim\\Views\\Home\\Login.cshtml",
+              "ToolTip": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\Views\\Home\\Login.cshtml",
+              "RelativeToolTip": "DuAnRapChieuPhim\\Views\\Home\\Login.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-09T13:58:52.525Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "DuAnRapChieuPhim\\Controllers\\HomeController.cs",
+              "ToolTip": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "DuAnRapChieuPhim\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAUwDcAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-09T13:57:53.785Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Startup.Auth.cs",
+              "DocumentMoniker": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\App_Start\\Startup.Auth.cs",
+              "RelativeDocumentMoniker": "DuAnRapChieuPhim\\App_Start\\Startup.Auth.cs",
+              "ToolTip": "D:\\Tai_Lieu\\DACS\\DACN_MOVIE_8\\DuAnRapChieuPhim\\App_Start\\Startup.Auth.cs",
+              "RelativeToolTip": "DuAnRapChieuPhim\\App_Start\\Startup.Auth.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAcwEEAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-09T13:04:24.676Z"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 112,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

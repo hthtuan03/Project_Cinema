@@ -1,0 +1,400 @@
+﻿@model  IPagedList<DuAnRapChieuPhim.Models.Combo>
+@using PagedList
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Combo";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+
+    <<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- Navbar
+                </div>
+
+            </div>
+        </div>-->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                    <div class="input-group input-group-outline">
+                        <label class="form-label">Type here...</label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+
+        <button type="button" class="btn btn-primary createNewButton" data-toggle="modal" data-target="#addMovieModal">
+            Thêm Combo
+        </button>
+        <p>
+            <table class="table">
+                <tr>
+                    <th>
+                        Mã Combo
+                    </th>
+                    <th>
+                        Tên Combo
+                    </th>
+                    <th>
+                        Giá
+                    </th>
+
+                    <th>Mô tả</th>
+
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MaCB)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TenCB)
+                        </td>
+                        <td>
+                            @string.Format("{0:N0}", item.Gia) VND
+                        </td>
+
+                        <td>
+                            @{
+                                // Lấy mô tả từ model
+                                string moTa = item.MoTa;
+
+                                // Đặt giới hạn chiều dài
+                                int maxLength = 50;
+
+                                // Kiểm tra xem mô tả có vượt quá giới hạn không
+                                if (!string.IsNullOrEmpty(moTa) && moTa.Length > maxLength)
+                                {
+                                    // Cắt giảm mô tả và thêm dấu '...'
+                                    moTa = moTa.Substring(0, maxLength) + "...";
+                                }
+
+                                // Hiển thị mô tả
+                                @Html.Raw(moTa)
+                            }
+                        </td>
+
+                        <td>
+                            <button type="button" class="btn btn-primary edit-button" data-toggle="modal" data-target="#editMovieModal" data-id="@item.MaCB">
+                                Sửa
+                            </button>                          |
+                            <button type="button" class="btn btn-info details-button" data-toggle="modal" data-target="#detailsMovieModal" data-id="@item.MaCB">
+                                Chi tiết
+                            </button> |
+                            <button type="button" class="btn btn-danger delete-button" data-toggle="modal" data-target="#deleteConfirmationModal" data-id="@item.MaCB">
+                                Ngưng bán
+                            </button>
+
+                        </td>
+                    </tr>
+                }
+
+
+            </table>
+            <div class="pagination justify-content-center">
+                <ul class="pagination">
+                    @if (Model.PageCount > 1)
+                    {
+                        <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("Combo", new { page = 1, size = ViewBag.SelectedSize })">Đầu</a>
+                        </li>
+                        <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("Combo", new { page = Model.PageNumber - 1, size = ViewBag.SelectedSize })">Trước</a>
+                        </li>
+                        for (int i = 1; i <= Model.PageCount; i++)
+                        {
+                            <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                                <a class="page-link" href="@Url.Action("Combo", new { page = i, size = ViewBag.SelectedSize })">@i</a>
+                            </li>
+                        }
+                        <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("Combo", new { page = Model.PageNumber + 1, size = ViewBag.SelectedSize })">Sau</a>
+                        </li>
+                        <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("Combo", new { page = Model.PageCount, size = ViewBag.SelectedSize })">Cuối</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+    </div>
+</main>
+<div class="modal fade" id="addMovieModal" tabindex="-1" role="dialog" aria-labelledby="addMovieModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addMovieModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Your form goes here -->
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myForm", enctype = "multipart/form-data" }))
+                {
+
+                    @Html.AntiForgeryToken();
+                    <!-- Add form fields here -->
+                    <div class="form-group">
+                        <label for="TenCombo" class="control-label">Tên Combo</label>
+                        <input type="text" id="TenCombo" name="TenCombo" class="form-control" required />
+                        <span class="text-danger"> <!-- Validation message goes here --> </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Gia" class="control-label">Giá</label>
+                        <input type="text" id="Gia" name="Gia" class="form-control" required />
+                        <span class="text-danger"> <!-- Validation message goes here --> </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Loai" class="control-label">Mô tả</label>
+                        <input type="text" id="Loai" name="Loai" class="form-control" required />
+                        <span class="text-danger"> <!-- Validation message goes here --> </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="GhiChu" class="control-label">Ghi chú</label>
+                        <input type="text" id="GhiChu" name="GhiChu" class="form-control" required />
+                        <span class="text-danger"> <!-- Validation message goes here --> </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="MaDoAn" class="control-label">Mã đồ ăn</label>
+
+                        <!-- Sử dụng thẻ <select> để tạo combobox -->
+                        <select id="MaDoAn" name="MaDoAn" class="form-control" required>
+                            <!-- Sử dụng Razor để lặp qua danh sách dữ liệu từ ViewBag.MaDoAn -->
+                            @foreach (var maDoAn in ViewBag.DoAn)
+                            {
+                                <option value="@maDoAn.MaDoAn">@maDoAn.MaDoAn</option>
+                            }
+                        </select>
+
+                        <span class="text-danger"><!-- Validation message goes here --></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="MaNuoc" class="control-label">Mã Nước</label>
+
+                        <!-- Sử dụng thẻ <select> để tạo combobox -->
+                        <select id="MaNuoc" name="MaNuoc" class="form-control" required>
+                            <!-- Sử dụng Razor để lặp qua danh sách dữ liệu từ ViewBag.MaDoAn -->
+                            @foreach (var maDoAn in ViewBag.Nuoc)
+                            {
+                                <option value="@maDoAn.MaNuoc">@maDoAn.MaNuoc</option>
+                            }
+                        </select>
+
+                        <span class="text-danger"><!-- Validation message goes here --></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SoLuongDA" class="control-label">Số lượng đồ ăn</label>
+
+                        <!-- Sử dụng thẻ <input type="number"> để nhập số lượng -->
+                        <input type="number" id="SoLuongDA" name="SoLuongDA" class="form-control" required />
+
+                        <span class="text-danger"><!-- Validation message for Số lượng goes here --></span>
+                    </div>
+                    <!-- Add other form fields as needed -->
+                    <div class="form-group">
+                        <label for="SoLuongNuoc" class="control-label">Số lượng nước</label>
+
+                        <!-- Sử dụng thẻ <input type="number"> để nhập số lượng -->
+                        <input type="number" id="SoLuongNuoc" name="SoLuongNuoc" class="form-control" required />
+
+                        <span class="text-danger"><!-- Validation message for Số lượng goes here --></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="HinhAnh" class="control-label">Chọn hình ảnh</label>
+
+                        <!-- Sử dụng thẻ <input type="file"> để chọn hình ảnh -->
+                        <input type="file" id="HinhAnh" name="HinhAnh" accept="image/*" class="form-control-file" />
+
+                        <span class="text-danger"><!-- Validation message for Hình ảnh goes here --></span>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary huy-button" data-dismiss="modal">Close</button>
+                        <button id="saveChangesButton" type="submit" class="btn btn-primary">Save changes</button>
+                        <button id="ThemButton" type="submit" class="btn btn-primary add-doan">Lưu</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận ngưng bán</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc muốn ngưng bán sản phẩm này ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary huy-button" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Chắc chắn</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="selectedItemId" />
+
+<script>
+
+    function resetModalState() {
+        $("#MaDoAn, #TenCombo, #Gia,#Loai,#MaNuoc,#SoLuongDA,#SoLuongNuoc,HinhAnh,#GhiChu, #addMovieModalLabel").val("");
+        $("#saveChangesButton, #ThemButton").show();
+        $("#MaDoAn, #TenCombo, #Gia,#Loai,#MaNuoc,#SoLuongDA,#SoLuongNuoc,#HinhAnh,#GhiChu").prop("disabled", false);
+    }
+    $(document).ready(function () {
+
+
+        $(".createNewButton").click(function () {
+            resetModalState();
+            $("#addMovieModalLabel").val("Thêm");
+            $("#saveChangesButton").hide();
+            $("#addMovieModal").modal("show");
+        });
+    });
+
+    $(document).ready(function () {
+        $("#saveChangesButton").click(function () {
+            // Gọi hành động sửa ở đây
+            $("#myForm").attr("action", "/XuLy/EditCB");
+            $("#myForm").submit();
+        });
+
+        $("#ThemButton").click(function () {
+            // Gọi hành động thêm ở đây
+            $("#myForm").attr("action", "/XuLy/AddCB");
+            $("#myForm").submit();
+        });
+    });
+    $(document).ready(function () {
+        $(".edit-button").click(function () {
+            resetModalState();
+            var itemId = $(this).data("id");
+            $("#selectedItemId").val(itemId);            // Gửi yêu cầu Ajax để lấy dữ liệu cho mục đã chọn
+            $.ajax({
+                url: '/XuLy/EditCB', // Thay thế bằng tên thực của controller và action
+                type: 'GET',
+                data: { id: itemId },
+                success: function (data) {
+                    $("#addMovieModalLabel").val("Sửa");
+                    // Điền dữ liệu vào các trường trong modal
+                    $("#MaNuoc").val(data.CB.MaNuoc);
+                    $("#Gia").val(data.CB.Gia);
+                    $("#Loai").val(data.CB.MoTa);
+                    $("#MaDoAn").val(data.CB.MaDoAn);
+                    $("#TenCombo").val(data.CB.TenCombo);
+                    $("#SoLuongDA").val(data.CB.SoLuongDA);
+                    $("#SoLuongNuoc").val(data.CB.SoLuongNuoc);
+                    $("#GhiChu").val(data.CB.GhiChu);
+                    $("#ThemButton").hide();
+                    $("#HinhAnh").show();
+                    // Hiển thị modal
+                    $("#addMovieModal").modal("show");
+                },
+                error: function () {
+                    alert("Lỗi khi lấy dữ liệu.");
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $(".details-button").click(function () {
+            var itemId = $(this).data("id");
+            $("#selectedItemId").val(itemId);
+
+            // Gửi yêu cầu Ajax để lấy dữ liệu cho mục đã chọn
+            $.ajax({
+                url: '/XuLy/EditCB', // Thay thế bằng tên thực của controller và action
+                type: 'GET',
+                data: { id: itemId },
+                success: function (data) {
+                    $("#addMovieModalLabel").val("Chi tiết");
+                    // Điền dữ liệu vào các trường trong modal
+                    $("#MaNuoc").val(data.CB.MaNuoc);
+                    $("#Gia").val(data.CB.Gia);
+                    $("#Loai").val(data.CB.MoTa);
+                    $("#MaDoAn").val(data.CB.MaDoAn);
+                    $("#TenCombo").val(data.CB.TenCombo);
+                    $("#SoLuongDA").val(data.CB.SoLuongDA);
+                    $("#SoLuongNuoc").val(data.CB.SoLuongNuoc);
+                    $("#GhiChu").val(data.CB.GhiChu);
+                    $("#saveChangesButton").hide();
+                    $("#ThemButton").hide();
+                    // Tắt khả năng chỉnh sửa các trường dữ liệu
+                    $("#MaNuoc").prop("disabled", true);
+                    $("#TenCombo").prop("disabled", true);
+                    $("#Gia").prop("disabled", true);
+                    $("#HinhAnh").prop("disabled", true);
+                    $("#Loai").prop("disabled", true);
+                    $("#GhiChu").prop("disabled", true);
+                    $("#MaDoAn").prop("disabled", true);
+                    $("#SoLuongDA").prop("disabled", true);
+                    $("#SoLuongNuoc").prop("disabled", true);
+                    // Hiển thị modal
+                    $("#addMovieModal").modal("show");
+                },
+                error: function () {
+                    alert("Lỗi khi lấy dữ liệu.");
+                }
+            });
+        });
+    });
+    $("#confirmDeleteButton").click(function (e) {
+        e.preventDefault();
+        // Lấy giá trị từ input có id là "selectedItemId"
+        var selectedItemId = $("#selectedItemId").val();
+
+        // Kiểm tra xem giá trị có tồn tại không
+        if (selectedItemId) {
+            // Gọi action trong controller với giá trị selectedItemId
+            // Thay đổi đường dẫn và phương thức HTTP tùy thuộc vào ứng dụng của bạn
+            $.ajax({
+                url: "/XuLy/DLCB", // Đường dẫn đến action trong controller
+                method: "POST", // Phương thức HTTP (POST, GET, PUT, DELETE, etc.)
+                data: { itemId: selectedItemId }, // Dữ liệu gửi đi (nếu cần)
+                success: function (response) {
+                    // Xử lý khi action thành công
+                    console.log("Action thành công", response);
+                    window.location.href = "/Admin/Admin/Combo";
+                },
+                error: function (error) {
+                    // Xử lý khi có lỗi xảy ra
+                    console.error("Lỗi khi gọi action", error);
+                }
+            });
+        } else {
+            // Thông báo nếu giá trị không tồn tại
+            console.warn("Không có giá trị được chọn");
+        }
+    });
+    $(document).ready(function () {
+        $('.delete-button').click(function (e) {
+            e.preventDefault();
+            var itemId = $(this).data("id");
+            $("#selectedItemId").val(itemId);
+            $('#confirmDeleteModal').modal('show');
+        });
+    });
+    $(document).ready(function () {
+        $('.huy-button').click(function (e) {
+            $('#confirmDeleteModal').modal('hide');
+            $('#addMovieModal').modal('hide');
+        });
+    });
+
+</script>
+
+

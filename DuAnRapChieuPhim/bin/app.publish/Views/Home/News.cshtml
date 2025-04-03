@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "News";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+@model  IPagedList<DuAnRapChieuPhim.Models.Tintuc>
+@using PagedList
+@using PagedList.Mvc
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-MBMaV5mRABtm9H0E4PZZZvcJvbNvAojypkKRUpAAB2F4adu8HtwVSGF8LZ6IFjG" crossorigin="anonymous">
+
+<div class="container" style="margin-top: 6rem;">
+    <div class="row">
+        <div class="col-12 text-center">
+            <div id="carousel1" class="carousel slide">
+                <ol class="carousel-indicators">
+                    @for (int i = 0; i < ViewBag.Slider.Count; i++)
+                    {
+                        <li data-target="#carousel1" data-slide-to="@i" class="@((i == 0) ? "active" : "")"></li>
+                    }
+                </ol>
+                <div class="carousel-inner">
+                    @for (int i = 0; i < ViewBag.Slider.Count; i++)
+                    {
+                        <div class="item @(i == 0 ? "active" : "")">
+                            <img class="img-responsive" src="~/IMG/@ViewBag.Slider[i].HinhAnh" alt="thumb" />
+                            <div class="carousel-caption">@ViewBag.Slider[i].TenHinh</div>
+                        </div>
+                    }
+                </div>
+                <a class="left carousel-control" href="#carousel1" data-slide="prev"><span class="icon-prev"></span></a>
+                <a class="right carousel-control" href="#carousel1" data-slide="next"><span class="icon-next"></span></a>
+            </div>
+
+        </div>
+    </div>
+    <br />
+
+    <div class="row">
+        @foreach (var sp in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <a href="@Url.Action("DetailNew","Home",new {id=sp.Matin})">
+                        <img src="~/IMG/@sp.Anhbia" alt="Tên tin tức" class="card-img-top custom-image-size" />
+                    </a>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <small class="text-muted"><i class="far fa-calendar-alt"></i> @sp.Ngaybatdau - @sp.Ngayketthuc</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="pagination">
+            <ul class="pagination">
+                @if (Model.PageCount > 1)
+                {
+                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("News", new { page = 1, size = ViewBag.SelectedSize })">First</a>
+                    </li>
+                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("News", new { page = Model.PageNumber - 1, size = ViewBag.SelectedSize })">Previous</a>
+                    </li>
+                    for (int i = 1; i <= Model.PageCount; i++)
+                    {
+                        <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("News", new { page = i, size = ViewBag.SelectedSize })">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("News", new { page = Model.PageNumber + 1, size = ViewBag.SelectedSize })">Next</a>
+                    </li>
+                    <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("News", new { page = Model.PageCount, size = ViewBag.SelectedSize })">Last</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>

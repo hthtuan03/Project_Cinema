@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "DetailNew";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+@model DuAnRapChieuPhim.Models.Tintuc
+<link rel="stylesheet" href="~/Content/Detail.css">
+<style>
+    p{
+        font-weight:bold;
+    }
+</style>
+<h2 style=" margin-top:50px; color:white;text-align:center;" >@Model.Chudetin</h2>
+<div class="custom-container">
+    
+        
+            
+            
+            <div class="news" >
+                <img src="~/IMG/@Model.Anhbia" alt="Poster phim" class="img-fluid animate__animated animate__zoomIn" style="width:100%;">
+                <p class="mb-4">1. Cách thức nhận ưu đãi:</p>
+                <p>
+                    @Model.ThoiHan
+                </p>
+                <p class="mb-4">2. Nội dung ưu đãi:</p>
+                <p>
+                    @Model.Mota
+                </p>
+                <p class="mb-4">3. Điều kiện váp dụng:</p>
+                <p>
+                    @Model.DieuKien
+                </p>
+            </div>
+       
+    
+</div>

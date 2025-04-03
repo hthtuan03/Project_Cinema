@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Blog";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+@model DuAnRapChieuPhim.Models.Blog
+<style>
+    .h2 {
+        font-weight: bold;
+    }
+
+    img {
+        width: 50%;
+       
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+<h2>@Model.TieuDe</h2>
+<p><img src="@Url.Content("~/IMG/" + Model.HinhAnh)" /></p>
+<p>@Model.NoiDung</p>
+<p><img src="@Url.Content("~/IMG/" + Model.HinhAnh2)" /></p>
+<p>@Model.NoiDung2</p>
+<p><img src="@Url.Content("~/IMG/" + Model.HinhAnh3)" /></p>
+<p>@Model.NoiDung3</p>
+<p>
+    <strong>
+        @(Model.NgayDang.HasValue ? Model.NgayDang.Value.ToString("dd/MM/yyyy") : "Ngày không xác định")
+    </strong>
+</p>121

@@ -1,0 +1,110 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layout.cshtml";
+
+}
+@model IEnumerable<DuAnRapChieuPhim.Models.Phim>
+<link rel="stylesheet" href="~/Content/title.css">
+<!--===========================Tittle Bar===========================-->
+<div class="title">
+    <h1 class="mh"></h1><br>
+</div>
+<!--===========================Sub Bar===========================-->
+<div class="th">
+    <h2 class="ch"></h2>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<!--===========================Sub Bar===========================-->
+<div class="th">
+    <h2 class="ch2" style="padding-left:330px;"></h2>
+</div>
+<!--===========================Division===========================-->
+<div class="outb ">
+    <div class="in1 " data-text="Fast...... ">Fast ......</div>
+    <div class="in2 " data-text="Safe...... ">Safe ......</div>
+    <div class="in3 " data-text="Secure.. ">Secure.</div>
+</div>
+<script>
+    var typed = new Typed(".mh", {
+        strings: ["MCT Welcomes you...!"],
+        typeSpeed: 50
+    })
+    var th = new Typed(".ch", {
+        strings: ['^3000  Now  You can buy ticker with MCT'],
+        typeSpeed: 10
+    })
+    var th2 = new Typed(".ch2", {
+        strings: ['^6000  MCT is '],
+        typeSpeed: 10
+    })
+</script>
+<div class="chrac" id="pro">
+    <div class="hc">
+        Phim sắp chiếu
+    </div>
+ 
+    <div class="main_flim">
+        @foreach (var phim in Model.Where(u => u.TrangThai.Contains("Sắp chiếu")).Take(4))
+        {
+            <div class="box">
+                <a href="@Url.Action("Detail","Home",new {id= phim.MaPhim})">
+                    <div class="box-img">
+                        <img src="~/IMG/@phim.AnhBia">
+                    </div>
+
+                    <div class="content">
+                        <h3>@phim.TenPhim</h3>
+                        <p>Thời lượng phim : @phim.ThoiLuong phút</p>
+                        <p>Phụ đề : @phim.NgonNgu</p>
+                    </div>
+                </a>
+            </div>
+        }
+        </div>
+   
+
+    <a href="~/Home/MovieSoone" target="_blank">
+        <button class="btn" title="Xem thêm">
+            <span title="Xem thêm" class="material-icons">
+                read_more
+            </span>
+        </button>
+    </a>
+</div>
+
+<div class="chrac" id="mov">
+    <div class="hc">
+        Phim đang chiếu
+    </div>
+    <div class="main_flim">
+        @foreach (var phim in Model.Where(u => u.TrangThai.Contains("Đang chiếu")).Take(4))
+        {
+            <div class="box">
+                <a href="@Url.Action("Detail","Home",new {id= phim.MaPhim})">
+                    <div class="box-img">
+                        <img src="~/IMG/@phim.AnhBia">
+                    </div>
+
+                    <div class="content">
+                        <h3>@phim.TenPhim</h3>
+                        <p>Thời lượng phim : @phim.ThoiLuong phút</p>
+                        <p>Phụ đề : @phim.NgonNgu</p>
+                    </div>
+                </a>
+            </div>
+        }
+        </div>
+    <a href="~/Home/MovieShow" target="_blank">
+        <button class="btn" title="Xem thêm">
+            <span title="Xem thêm" class="material-icons">
+                read_more
+            </span>
+        </button>
+    </a>
+</div>
+

@@ -1,0 +1,148 @@
+﻿@model  IPagedList<DuAnRapChieuPhim.Models.Feedback>
+@using PagedList
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Feedback";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- Navbar
+                </div>
+            </div>
+        </div>-->
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+        <form class="input-group w-50" action="/Admin/Admin/FindFeedback" method="post">
+            <input name="movie_search" type="text" class="form-control" placeholder="Tìm kiếm">
+            <input class="btn btn-secondary" type="submit" value="Tìm kiếm" />
+        </form>
+        <p>
+            <table class="table">
+                <tr>
+                    <th>
+                        Họ tên
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Tin nhắn
+                    </th>
+                    <th>
+                        Ngày gửi
+                    </th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Message)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SubmittedAt)
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger delete-button" data-toggle="modal" data-target="#deleteConfirmationModal" data-id="@item.Id">
+                                Xóa
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <div class="pagination justify-content-center">
+                <ul class="pagination">
+                    @if (Model.PageCount > 1)
+                    {
+                        <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("Feedbacks", new { page = 1, size = ViewBag.SelectedSize })"><<</a>
+                        </li>
+                        <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("Feedbacks", new { page = Model.PageNumber - 1, size = ViewBag.SelectedSize })"><</a>
+                        </li>
+                        for (int i = 1; i <= Model.PageCount; i++)
+                        {
+                            <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                                <a class="page-link" href="@Url.Action("Feedbacks", new { page = i, size = ViewBag.SelectedSize })">@i</a>
+                            </li>
+                        }
+                        <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("Feedbacks", new { page = Model.PageNumber + 1, size = ViewBag.SelectedSize })">></a>
+                        </li>
+                        <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("Feedbacks", new { page = Model.PageCount, size = ViewBag.SelectedSize })">>></a>
+                        </li>
+                    }
+                </ul>
+            </div>
+    </div>
+</main>
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận xóa phản hồi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc muốn xóa phản hồi này này ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary huy-button" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Chắc chắn</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="selectedItemId" />
+<script>
+    $("#confirmDeleteButton").click(function (e) {
+        e.preventDefault();
+        // Lấy giá trị từ input có id là "selectedItemId"
+        var selectedItemId = $("#selectedItemId").val();
+        // Kiểm tra xem giá trị có tồn tại không
+        if (selectedItemId) {
+            // Gọi action trong controller với giá trị selectedItemId
+            // Thay đổi đường dẫn và phương thức HTTP tùy thuộc vào ứng dụng của bạn
+            $.ajax({
+                url: "/XuLy/DLFeedback", // Đường dẫn đến action trong controller
+                method: "POST", // Phương thức HTTP (POST, GET, PUT, DELETE, etc.)
+                data: { itemId: selectedItemId }, // Dữ liệu gửi đi (nếu cần)
+                success: function (response) {
+                    // Xử lý khi action thành công
+                    console.log("Action thành công", response);
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.error("Lỗi khi gọi action", error);
+                }
+            });
+        } else {
+            // Thông báo nếu giá trị không tồn tại
+            console.warn("Không có giá trị được chọn");
+        }
+    });
+    $(document).ready(function () {
+        $('.delete-button').click(function (e) {
+            e.preventDefault();
+            var itemId = $(this).data("id");
+            $("#selectedItemId").val(itemId);
+            $('#confirmDeleteModal').modal('show');
+        });
+    });
+    $(document).ready(function () {
+        $('.huy-button').click(function (e) {
+            $('#confirmDeleteModal').modal('hide');
+            $('#addMovieModal').modal('hide');
+        });
+    });</script>
+

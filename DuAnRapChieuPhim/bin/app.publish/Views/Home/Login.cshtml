@@ -1,0 +1,239 @@
+﻿
+@{
+    Layout = null;
+
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Webleb</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.9/css/unicons.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/Content/login.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+</head>
+<body>
+
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
+    <div class="section">
+        <div class="container">
+            <div class="row full-height justify-content-center">
+                <div class="col-12 text-center align-self-center py-5">
+                    @if (ViewData["err"] != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <i class="uil uil-exclamation-octagon"></i> <!-- Icon from Unicons -->
+                            @ViewData["err"]
+                        </div>
+                    }
+
+                    @if (ViewData["succes"] != null)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            <i class="uil uil-check-circle"></i> <!-- Icon from Unicons -->
+                            @ViewData["succes"]
+                        </div>
+                    }
+                    <div class="section pb-5 pt-5 pt-sm-2 text-center">
+
+                        <h6 class="mb-0 pb-3"><span>Đăng nhập </span><span>Đăng ký</span></h6>
+                        <input class="checkbox" type="checkbox" id="reg-log" name="reg-log" />
+                        <label for="reg-log"></label>
+                        <div class="card-3d-wrap mx-auto">
+                            <div class="card-3d-wrapper">
+                                <div class="card-front">
+                                    <div class="center-wrap">
+                                        <div class="section text-center">
+                                            <h4 class="mb-4 pb-3">Đăng nhập</h4>
+                                            <form method="post" action="@Url.Action("Login", "Home")">
+                                                <div class="form-group">
+                                                    <input type="text" id="loginInput" name="loginInput" class="form-style" placeholder="Email/SĐT" value="@ViewBag.EmailOrPhone">
+                                                    <i class="input-icon uil uil-at"></i>
+                                                </div>
+                                                <div class="form-group mt-2">
+                                                    <input type="password" id="passwordInput" name="passwordInput" class="form-style" placeholder="Mật khẩu">
+                                                    <i class="input-icon uil uil-lock-alt"></i>
+                                                </div>
+                                                <button type="submit" class="btn mt-4">Đăng nhập</button>
+                                            </form>
+                                            <p class="mb-0 mt-4 text-center">
+                                                <a href="#" id="forgotPasswordLink" class="link" data-toggle="modal" data-target="#forgotPasswordModal">
+                                                    Quên mật khẩu?
+                                                </a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-back">
+                                    <div class="center-wrap">
+                                        <div class="section text-center">
+                                            <h4 class="mb-3 pb-3">Đăng ký</h4>
+                                            <form id="registrationForm" method="post" action="~/Home/DK" onsubmit="return validateForm()">
+                                                <div class="form-group">
+                                                    <input type="text" name="HoTen" class="form-style" placeholder="Họ và tên">
+                                                    <i class="input-icon uil uil-user"></i>
+                                                </div>
+                                                <div class="form-group mt-2">
+                                                    <input type="tel" name="SoDienThoai" class="form-style" placeholder="Số điện thoại">
+                                                    <i class="input-icon uil uil-phone"></i>
+                                                </div>
+                                                <div class="form-group mt-2">
+                                                    <input type="email" name="Email" class="form-style" placeholder="Email">
+                                                    <i class="input-icon uil uil-at"></i>
+                                                </div>
+                                                <div class="form-group mt-2">
+                                                    <input type="password" name="MatKhau" class="form-style" placeholder="Mật khẩu">
+                                                    <i class="input-icon uil uil-lock-alt"></i>
+                                                </div>
+                                                <div class="form-group mt-2">
+                                                    <input type="password" name="NhapLaiMatKhau" class="form-style" placeholder="Nhập lại mật khẩu">
+                                                    <i class="input-icon uil uil-lock-alt"></i>
+                                                </div>
+                                                <button type="submit" class="btn mt-4">Đăng ký</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="forgotPasswordModalLabel">Quên mật khẩu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Thêm trường dropdown để chọn loại thông tin -->
+                <label for="inputType">Chọn loại thông tin:</label>
+                <select id="inputType" class="form-control">
+                    <option value="phone">Số điện thoại</option>
+                    <option value="email">Email</option>
+                </select>
+
+                <!-- Thêm trường nhập thông tin (số điện thoại hoặc email) -->
+                <label for="inputInfo">Thông tin:</label>
+                <input type="text" id="inputInfo" class="form-control" placeholder="Nhập số điện thoại hoặc email">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary dong" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="checkUserExistence()">Gửi yêu cầu</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#forgotPasswordLink').click(function () {
+        $('#forgotPasswordModal').modal('show');
+    });
+    $('.dong').click(function () {
+        $('#forgotPasswordModal').modal('hide');
+    });
+    function submitForgotPassword() {
+        // Lấy giá trị từ trường dropdown và trường nhập thông tin
+        var selectedType = $('#inputType').val();
+        var info = $('#inputInfo').val();
+
+        // Gọi API ForgotPassword
+        $.ajax({
+            url: '@Url.Action("ForgotPassword", "Home")',
+            type: 'POST',
+            data: { inputType: selectedType, inputInfo: info },
+            success: function (result) {
+                // Xử lý kết quả trả về từ action ForgotPassword
+                if (result.success) {
+                    alert('Yêu cầu đã được gửi thành công. Vui lòng kiểm tra email để đặt lại mật khẩu.');
+                    // Đóng modal sau khi xử lý xong
+                    $('#forgotPasswordModal').modal('hide');
+                } else {
+                    alert('Có lỗi xảy ra. Vui lòng thử lại sau.');
+                }
+            },
+            error: function () {
+                alert('Có lỗi xảy ra. Vui lòng thử lại sau.');
+            }
+        });
+    }
+    function checkUserExistence() {
+    var selectedType = $('#inputType').val();
+    var info = $('#inputInfo').val();
+
+    // Gọi API để kiểm tra sự tồn tại của người dùng
+    $.ajax({
+        url: '@Url.Action("CheckUserExistence", "Home")',
+        type: 'POST',
+        data: { inputType: selectedType, inputInfo: info },
+        success: function (result) {
+            if (result.exist) {
+                // Nếu người dùng tồn tại, gọi hàm đặt lại mật khẩu
+                submitForgotPassword();
+            } else {
+                alert('Người dùng không tồn tại. Vui lòng kiểm tra lại thông tin.');
+            }
+        },
+        error: function (error) {
+            alert('Đã xảy ra lỗi khi kiểm tra sự tồn tại của người dùng.');
+        }
+    });
+}
+
+    function validateForm() {
+        // Lấy giá trị từ các ô input
+        var hoTen = document.forms["registrationForm"]["HoTen"].value;
+        var soDienThoai = document.forms["registrationForm"]["SoDienThoai"].value;
+        var email = document.forms["registrationForm"]["Email"].value;
+        var matKhau = document.forms["registrationForm"]["MatKhau"].value;
+        var nhapLaiMatKhau = document.forms["registrationForm"]["NhapLaiMatKhau"].value;
+
+        // Kiểm tra từng điều kiện
+        if (hoTen.trim() === "") {
+            alert("Họ và tên không được bỏ trống");
+            return false;
+        }
+
+        if (!/^\d{10}$/.test(soDienThoai)) {
+            alert("Số điện thoại phải có 10 chữ số");
+            return false;
+        }
+
+        // Chú ý: Đối với biểu thức chính quy liên quan đến email, thêm dấu backslash trước ký tự
+        if (!/\S+@@\S+\.\S+/.test(email)) {
+            alert("Email không hợp lệ");
+            return false;
+        }
+
+        if (matKhau.length < 8 || !/[A-Z]/.test(matKhau) || !/[!@@#$%^&*()_+]/.test(matKhau)) {
+            alert("Mật khẩu không hợp lệ mật khẩu phải tối thiểu có 8 kí tự trong đó có 1 ký tự viết hoa 1 ký tự đặc biệt");
+            return false;
+        }
+
+        if (matKhau !== nhapLaiMatKhau) {
+            alert("Mật khẩu và Nhập lại mật khẩu không trùng khớp");
+            return false;
+        }
+
+        // Nếu tất cả đều hợp lệ, cho phép submit
+        return true;
+    }
+</script>

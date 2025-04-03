@@ -1,0 +1,222 @@
+﻿@model  IPagedList<DuAnRapChieuPhim.Models.TheLoai>
+@using PagedList
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "TheLoai";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+
+    <<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- Navbar
+                </div>
+
+            </div>
+        </div>-->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                    <div class="input-group input-group-outline">
+                        <label class="form-label">Type here...</label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+
+        <button type="button" class="btn btn-primary createNewButton" data-toggle="modal" data-target="#addMovieModal">
+            Thêm thể loại
+        </button>
+        <p>
+            <table class="table">
+                <tr>
+                    <th>
+                        Mã thể loại
+                    </th>
+                    <th>
+                        Tên thể loại
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MaTheLoai)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TenTheLoai)
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary edit-button" data-toggle="modal" data-target="#editMovieModal" data-id="@item.MaTheLoai">
+                                Sửa
+                            </button>                        
+
+                        </td>
+                    </tr>
+                }
+
+
+            </table>
+            <div class="pagination justify-content-center">
+                <ul class="pagination">
+                    @if (Model.PageCount > 1)
+                    {
+                        <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("TheLoai", new { page = 1, size = ViewBag.SelectedSize })">Đầu</a>
+                        </li>
+                        <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("TheLoai", new { page = Model.PageNumber - 1, size = ViewBag.SelectedSize })">Trước</a>
+                        </li>
+                        for (int i = 1; i <= Model.PageCount; i++)
+                        {
+                            <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                                <a class="page-link" href="@Url.Action("TheLoai", new { page = i, size = ViewBag.SelectedSize })">@i</a>
+                            </li>
+                        }
+                        <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("TheLoai", new { page = Model.PageNumber + 1, size = ViewBag.SelectedSize })">Sau</a>
+                        </li>
+                        <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("TheLoai", new { page = Model.PageCount, size = ViewBag.SelectedSize })">Cuối</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+    </div>
+</main>
+<div class="modal fade" id="addMovieModal" tabindex="-1" role="dialog" aria-labelledby="addMovieModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addMovieModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Your form goes here -->
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myForm", enctype = "multipart/form-data" }))
+                {
+
+                    @Html.AntiForgeryToken();
+                    <!-- Add form fields here -->
+                    <div class="form-group">
+                        <label for="TenTheLoai" class="control-label">Tên thể loại</label>
+                        <input type="text" id="TenTheLoai" name="TenTheLoai" class="form-control" required />
+                        <span class="text-danger"> <!-- Validation message goes here --> </span>
+                    </div>
+
+
+
+                    <!-- Add other form fields as needed -->
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary huy-button" data-dismiss="modal">Close</button>
+                        <button id="saveChangesButton" type="submit" class="btn btn-primary">Save changes</button>
+                        <button id="ThemButton" type="submit" class="btn btn-primary add-doan">Lưu</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="selectedItemId" />
+
+<script>
+
+    function resetModalState() {
+        $("#TenTheLoai, #addMovieModalLabel").val("");
+        $("#saveChangesButton, #ThemButton").show();
+        $("#TenTheLoai").prop("disabled", false);
+    }
+    $(document).ready(function () {
+
+
+        $(".createNewButton").click(function () {
+            resetModalState();
+            $("#addMovieModalLabel").val("Thêm");
+            $("#saveChangesButton").hide();
+            $("#addMovieModal").modal("show");
+        });
+    });
+
+    $(document).ready(function () {
+        $("#saveChangesButton").click(function () {
+            // Gọi hành động sửa ở đây
+            $("#myForm").attr("action", "/XuLy/EditTL");
+            $("#myForm").submit();
+        });
+
+        $("#ThemButton").click(function () {
+            // Gọi hành động thêm ở đây
+            $("#myForm").attr("action", "/XuLy/AddTL");
+            $("#myForm").submit();
+        });
+    });
+    $(document).ready(function () {
+        $(".edit-button").click(function () {
+            resetModalState();
+            var itemId = $(this).data("id");
+            $("#selectedItemId").val(itemId);
+
+            // Gửi yêu cầu Ajax để lấy dữ liệu cho mục đã chọn
+            $.ajax({
+                url: '/XuLy/EditTL', // Thay thế bằng tên thực của controller và action
+                type: 'GET',
+                data: { id: itemId },
+                success: function (data) {
+                    $("#addMovieModalLabel").val("Sửa");
+                    // Điền dữ liệu vào các trường trong modal
+                    $("#TenTheLoai").val(data.TL.TenTheLoai);
+                 $("#ThemButton").hide();
+                    // Hiển thị modal
+                    $("#addMovieModal").modal("show");
+                },
+                error: function () {
+                    alert("Lỗi khi lấy dữ liệu.");
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $(".details-button").click(function () {
+            var itemId = $(this).data("id");
+            $("#selectedItemId").val(itemId);
+
+            // Gửi yêu cầu Ajax để lấy dữ liệu cho mục đã chọn
+            $.ajax({
+                url: '/XuLy/EditTL', // Thay thế bằng tên thực của controller và action
+                type: 'GET',
+                data: { id: itemId },
+                success: function (data) {
+                    $("#addMovieModalLabel").val("Chi tiết");
+                    // Điền dữ liệu vào các trường trong modal
+                    $("#TenTheLoai").val(data.TL.TenTheLoai);
+                    $("#saveChangesButton").hide();
+                    $("#ThemButton").hide();
+                    // Tắt khả năng chỉnh sửa các trường dữ liệu
+                    $("#TenTheLoai").prop("disabled", true);
+                    // Hiển thị modal
+                    $("#addMovieModal").modal("show");
+                },
+                error: function () {
+                    alert("Lỗi khi lấy dữ liệu.");
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $('.huy-button').click(function (e) {
+            $('#confirmDeleteModal').modal('hide');
+            $('#addMovieModal').modal('hide');
+        });
+    });
+
+</script>
+
+

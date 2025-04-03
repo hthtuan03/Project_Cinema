@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="DefaultConnection-Web.config Connection String" description="DefaultConnection Connection String used in web.config by the application to access the database." defaultValue="Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Cinema.mdf;Initial Catalog=Cinema;Integrated Security=True" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="E:\\DACN_MOVIE_8\\DACN_MOVIE_8\\DuAnRapChieuPhim\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+  <parameter name="CinemaConnectionString-Web.config Connection String" description="CinemaConnectionString Connection String used in web.config by the application to access the database." defaultValue="Server=tcp:duanrapchieuphimdbserver.database.windows.net,1433;Initial Catalog=DuAnRapChieuPhim_db;Persist Security Info=False;User ID=cinemaadmin;Password=Tranduc123@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="E:\\DACN_MOVIE_8\\DACN_MOVIE_8\\DuAnRapChieuPhim\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='CinemaConnectionString']/@connectionString" />
+  </parameter>
+  <parameter name="DuAnRapChieuPhim.Models.ApplicationDbContext+DbContext-Web.config Connection String" description="DuAnRapChieuPhim.Models.ApplicationDbContext+DbContext Connection String used in web.config by the application to access the database." defaultValue="DuAnRapChieuPhim.Models.ApplicationDbContext+DbContext_ConnectionString" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="E:\\DACN_MOVIE_8\\DACN_MOVIE_8\\DuAnRapChieuPhim\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DuAnRapChieuPhim.Models.ApplicationDbContext+DbContext']/@connectionString" />
+  </parameter>
+</parameters>

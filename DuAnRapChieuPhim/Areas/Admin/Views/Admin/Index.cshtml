@@ -1,0 +1,144 @@
+﻿@model DuAnRapChieuPhim.Models.DoanhThuViewModel
+@{
+    ViewBag.Title = "Statistics";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <div class="container-fluid py-4">
+        <h1 class="text-center mb-4">Thống kê số liệu doanh thu</h1>
+        <div class="filters mb-4">
+            <form method="get" action="@Url.Action("Index", "Admin", new { area = "Admin" })" class="form-inline">
+                <div class="form-group mr-3">
+                    <label for="cinemaFilter" class="mr-2">Rạp:</label>
+                    <select name="cinemaId" id="cinemaFilter" class="form-control">
+                        <option value="">Tất cả rạp</option>
+                        @{
+                            var cinemaIdFromQuery = Request.QueryString["cinemaId"];
+                            int? selectedCinemaId = null;
+
+                            if (!string.IsNullOrEmpty(cinemaIdFromQuery))
+                            {
+                                int parsedCinemaId;
+                                if (int.TryParse(cinemaIdFromQuery, out parsedCinemaId))
+                                {
+                                    selectedCinemaId = parsedCinemaId;
+                                }
+                            }
+                        }
+
+                        @foreach (var cinema in ViewBag.Cinemas as List<DuAnRapChieuPhim.Models.RapChieu>)
+                        {
+                            <option value="@cinema.MaRap" @(cinema.MaRap == selectedCinemaId ? "selected" : "")>
+                                @cinema.TenRap
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group mr-3">
+                    <label for="dateFilter" class="mr-2">Ngày:</label>
+                    <input type="date" name="filterDate" id="dateFilter" class="form-control" value="@Request.QueryString["filterDate"]" />
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="margin-bottom: 0px;">Lọc</button>
+            </form>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Tổng thu được</h5>
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Số lượng vé bán được</h5>
+                        <canvas id="ticketCountChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Biểu đồ doanh thu
+        var revenueData = {
+            labels: @Html.Raw(Json.Encode(Model.Labels.Select(d => DateTime.Parse(d).ToString("dd-MM-yyyy")))),
+            datasets: [
+                {
+                    label: 'Doanh thu bán vé',
+                    data: @Html.Raw(Json.Encode(Model.TicketData)),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Doanh thu bán combo',
+                    data: @Html.Raw(Json.Encode(Model.ComboData)),
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(200, 70, 89, 1)',
+                    borderWidth: 1
+                }
+            ]
+        };
+
+        var revenueChart = new Chart(document.getElementById('revenueChart').getContext('2d'), {
+            type: 'bar',
+            data: revenueData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        var ticketCountData = {
+            labels: @Html.Raw(Json.Encode(Model.Labels.Select(d => DateTime.Parse(d).ToString("dd-MM-yyyy")))),
+            datasets: [
+                {
+                    label: 'Số lượng vé bán được theo ngày',
+                    data: @Html.Raw(Json.Encode(Model.TicketCountByDay)),
+                    backgroundColor: 'rgba(75, 192, 192, 0.4)', 
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Số lượng vé bán được theo tháng',
+                    data: @Html.Raw(Json.Encode(Model.TicketCountByMonth)),
+                    backgroundColor: 'rgba(153, 102, 255, 0.4)', 
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Số lượng vé bán được theo năm',
+                    data: @Html.Raw(Json.Encode(Model.TicketCountByYear)),
+                    backgroundColor: 'rgba(255, 159, 64, 0.4)', 
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 1
+                }
+            ]
+        };
+
+        var ticketCountChart = new Chart(document.getElementById('ticketCountChart').getContext('2d'), {
+            type: 'bar',
+            data: ticketCountData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</main>

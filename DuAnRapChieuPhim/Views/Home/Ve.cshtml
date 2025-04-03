@@ -1,0 +1,74 @@
+﻿@model IPagedList<DuAnRapChieuPhim.Models.HoaDon>
+@using PagedList
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Ve";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #000;
+        color: white;
+    }
+</style>
+
+<div class="container mt-5">
+    <h2 style="color: white; font-weight:bold;margin-top:60px;text-align:center">Danh sách hóa đơn</h2>
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+    <div style="margin-top: 50px" class="row justify-content-center">
+        <form>
+            <table style="background-color:transparent;" class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Họ Tên</th>
+                        <th scope="col">Số Điện Thoại</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Mã KH</th>
+                        <th scope="col">Trạng Thái</th>
+                        <th scope="col">Tiền Vé</th>
+                        <th scope="col">Tiền Combo</th>
+                        <th scope="col">Tổng Tiền</th>
+                        <th scope="col">Ngày Đặt</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.HoTen</td>
+                            <td>@item.SoDienThoai</td>
+                            <td>@item.Email</td>
+                            <td>@item.MaKH</td>
+                            <td>@item.TrangThai</td>
+                            <td>@item.TienVe</td>
+                            <td>@item.TienCombo</td>
+                            <td>@item.TongTien</td>
+                            <td>@item.NgayDat</td>
+                            <td>
+                                <a href="@Url.Action("DetailsHD", new { id = item.MaHoaDon })" style="color: white;">Xem chi tiết</a> |
+
+                                @if (item.TrangThai == "Đã thanh toán")
+                                {
+                                    <a href="@Url.Action("CancelTicket", new { id = item.MaHoaDon })" style="color: red;" onclick="return confirm('Bạn có chắc chắn muốn hủy vé này không?');">Hủy Vé</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhr0ZrJR8z0KIag8BwDayawAAAAACAAAAAAAQZgAAAAEAACAAAACzEH4e2Qfn4bfcJnDEwt5/ilWpj8zl+ss5Jyuiyk9DiQAAAAAOgAAAAAIAACAAAACRBF5G/j4kexIKMu75tb4HPIUUSsEVWr8c+x2I4dpcViAAAAD1wfPx5IHlTN/1f78S74dmSjVNtf5SsFUuQRrcmAy700AAAAAvyx+MiR9EvST0rbbpChLspxMgvvb0uRadcYP1KXg5Dq9mPjZujldMAKsw/vuyl+xCxjbXf7P2+N+5F4aoEg/S</EncryptedPassword>
+    <History>False|2024-11-23T05:48:52.0997766Z||;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <AzureDBConnectionStrings Include="Data Source=duanrapchieuphimdbserver.database.windows.net,1433;Initial Catalog=DuAnRapChieuPhim_db;User ID=cinemaadmin;Password=Tranduc123@" />
+    <AzureDBConnectionStrings Include="REDACTED" />
+  </ItemGroup>
+</Project>

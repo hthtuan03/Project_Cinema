@@ -1,2 +1,2 @@
 # Project_Cinema
-Cinema_Project
+Cinema_Project using .Net Core

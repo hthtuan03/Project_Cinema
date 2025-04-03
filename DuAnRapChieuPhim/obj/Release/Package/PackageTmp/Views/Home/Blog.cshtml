@@ -1,0 +1,114 @@
+﻿@{
+    ViewBag.Title = "News";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<DuAnRapChieuPhim.Models.Blog>
+<h2>Phim Hay Của Năm</h2>
+<hr />
+
+
+<style>
+    .blog-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .blog-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 5px;
+    }
+
+        .blog-item img {
+            width: 400px; /* Đặt chiều rộng cho hình ảnh */
+            height: auto;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+
+    .blog-item-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .blog-item h3 {
+        margin: 0;
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+
+    .blog-item p {
+        margin: 10px 0;
+    }
+
+    .blog-item .btn {
+        margin-top: 10px;
+    }
+    .pagination {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+        .pagination a, .pagination span {
+            padding: 8px 12px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: #333;
+        }
+
+        .pagination .active {
+            font-weight: bold;
+            background-color: #007bff;
+            color: white;
+        }
+
+        .pagination a:hover {
+            background-color: #ddd;
+        }
+
+</style>
+
+<div class="blog-list">
+    @foreach (var item in Model)
+    {
+        <div class="blog-item">
+            <p>
+                <img src="@Url.Content("~/IMG/" + item.HinhAnh)" style="max-width: 100%; height: auto;" />
+            </p>
+            <div>
+                <h3>@item.TieuDe</h3>
+                <p>@item.NgayDang</p>
+                <p>@item.NoiDungNgan</p>
+                <a href="@Url.Action("DetailBlog", "Home", new { id = item.MaBlog })" class="btn btn-primary">Xem chi tiết</a>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="pagination">
+    @Html.PagedListPager(Model, page => Url.Action("Blog", new { page }),
+        new PagedListRenderOptions
+        {
+            DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+            DisplayLinkToLastPage = PagedListDisplayMode.Always,
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            DisplayLinkToIndividualPages = true,
+            MaximumPageNumbersToDisplay = 5,
+            LinkToPreviousPageFormat = "Previous",
+            LinkToNextPageFormat = "Next",
+            LinkToFirstPageFormat = "First",
+            LinkToLastPageFormat = "Last"
+        })
+</div>

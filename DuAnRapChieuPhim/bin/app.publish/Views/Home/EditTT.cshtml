@@ -1,0 +1,182 @@
+﻿@model DuAnRapChieuPhim.Models.ThongTinCaNhan
+
+@{
+    ViewBag.Title = "Chỉnh Sửa Thông Tin Cá Nhân";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+<style>
+    body {
+        color: #ffffff; /* Màu chữ trắng cho body */
+        background-color: #000000; /* Màu nền đen cho body */
+    }
+
+    .card-header {
+        background-color: #000000; /* Màu nền đen cho card header */
+        color: #ffffff; /* Màu chữ trắng cho card header */
+        font-weight: bold; /* In đậm chữ */
+    }
+
+    .card {
+        background-color: #000000; /* Màu nền đen cho card */
+        color: #ffffff; /* Màu chữ trắng cho nội dung card */
+    }
+
+    .form-control {
+        background-color: #333333; /* Màu nền đen cho các input */
+        color: #ffffff; /* Màu chữ trắng cho các input */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Màu xanh dương cho nút */
+        color: #ffffff; /* Màu chữ trắng cho nút */
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Màu xanh dương sáng khi di chuột qua */
+        }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            @if (ViewData["err"] != null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    <i class="uil uil-exclamation-octagon"></i> <!-- Icon from Unicons -->
+                    @ViewData["err"]
+                </div>
+            }
+
+            @if (ViewData["succes"] != null)
+            {
+                <div class="alert alert-success" role="alert">
+                    <i class="uil uil-check-circle"></i> <!-- Icon from Unicons -->
+                    @ViewData["succes"]
+                </div>
+            }
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="mb-0 text-center" style="font-weight:bold">Chỉnh Sửa Thông Tin Cá Nhân</h2>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("UpdateProfile", "Home", FormMethod.Post, new { id = "formUpdateProfile" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Họ và Tên:</label>
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(model => model.Ten, new { @class = "form-control", required = "required" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Số Điện Thoại:</label>
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(model => model.SDT, new { @class = "form-control", required = "required", pattern = "[0-9]{10}", title = "Số điện thoại phải có 10 chữ số" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Email:</label>
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", required = "required", pattern = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$", title = "Email không hợp lệ" })
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-primary" style="width:120px" onclick="validateAndSubmitTT()">Lưu Thông Tin</button>
+                    }
+                    <hr />
+                    @using (Html.BeginForm("ChangePassword", "Home", FormMethod.Post, new { id = "changePasswordForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" id="id" value="@Model.MaKH" />
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Mật khẩu hiện tại:</label>
+                            <div class="col-sm-8">
+                                <input type="password" name="CurrentPassword" id="CurrentPassword" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Mật khẩu mới:</label>
+                            <div class="col-sm-8">
+                                <input type="password" name="NewPassword" id="NewPassword" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Xác nhận mật khẩu mới:</label>
+                            <div class="col-sm-8">
+                                <input type="password" name="ConfirmPassword" id="ConfirmPassword" class="form-control" />
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-primary" style="width:120px" onclick="validateAndSubmit()">Đổi Mật Khẩu</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function validateAndSubmitTT() {
+        var ten = $('#Ten').val();
+        var sdt = $('#SDT').val();
+        var email = $('#Email').val();
+
+        // Kiểm tra trường Họ và Tên không trống
+        if (!ten) {
+            alert("Vui lòng nhập Họ và Tên.");
+            return;
+        }
+
+        // Kiểm tra trường Số Điện Thoại không trống và đúng định dạng
+        if (!sdt || !/^[0-9]{10}$/.test(sdt)) {
+            alert("Số Điện Thoại không hợp lệ. Phải có 10 chữ số.");
+            return;
+        }
+
+        // Kiểm tra trường Email không trống và đúng định dạng
+        if (!email || !/^[a-z0-9._%+-]+@@[a-z0-9.-]+\.[a-z]{2,}$/.test(email)) {
+            alert("Email không hợp lệ.");
+            return;
+        }
+
+        // Nếu các kiểm tra đều hợp lệ, submit form
+        $('#formUpdateProfile').submit();
+    }
+    function validateAndSubmit() {
+        var currentPassword = $('#CurrentPassword').val();
+        var newPassword = $('#NewPassword').val();
+        var confirmPassword = $('#ConfirmPassword').val();
+
+        // Kiểm tra mật khẩu cũ đúng định dạng và không trống
+        if (!currentPassword || !isValidPassword(currentPassword)) {
+            alert("Mật khẩu hiện tại không hợp lệ. Mật khẩu phải 8 kí tự bao gồm 1 kí tự số,1 kí tự viết hoa,1 kí tự đặc biệt");
+            return;
+        }
+
+        // Kiểm tra mật khẩu mới đúng định dạng và không trống
+        if (!newPassword || !isValidPassword(newPassword)) {
+            alert("Mật khẩu mới không hợp lệ. Mật khẩu phải 8 kí tự bao gồm 1 kí tự số,1 kí tự viết hoa,1 kí tự đặc biệt");
+            return;
+        }
+
+        // Kiểm tra mật khẩu mới và xác nhận mật khẩu mới trùng khớp
+        if (newPassword !== confirmPassword) {
+            alert("Mật khẩu mới và xác nhận mật khẩu mới không trùng khớp.");
+            return;
+        }
+
+        // Nếu các kiểm tra đều hợp lệ, submit form
+        $('#changePasswordForm').submit();
+    }
+
+    function isValidPassword(password) {
+        // Thêm các điều kiện kiểm tra mật khẩu ở đây
+        // Ví dụ: ít nhất 8 ký tự, chứa ít nhất 1 chữ hoa, 1 số, 1 ký tự đặc biệt
+        var passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@@$!%*#?&])[A-Za-z\d@@$!%*#?&]{8,}$/;
+        return passwordRegex.test(password);
+    }
+</script>

@@ -1,0 +1,257 @@
+﻿@model  IPagedList<DuAnRapChieuPhim.Models.Ghe>
+@using PagedList
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Chair";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- Navbar
+                </div>
+
+            </div>
+        </div>-->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                    <div class="input-group input-group-outline">
+                        <label class="form-label">Type here...</label>
+                        <input type="text" class="form-control">
+                    </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+
+        <button type="button" class="btn btn-primary createNewButton" data-toggle="modal" data-target="#addMovieModal">
+            Thêm Ghế
+        </button>
+        <table class="table">
+            <tr>
+                <th>
+                    Mã phòng
+                </th>
+                <th>
+                    Tên ghế
+                </th>
+                <th>
+                    Loại ghế
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaPhong)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TenGhe)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LoaiGhe)
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary edit-button" data-toggle="modal" data-target="#editMovieModal" data-id="@item.MaGhe">
+                            Sửa
+                        </button>                          |
+                        <button type="button" class="btn btn-info details-button" data-toggle="modal" data-target="#detailsMovieModal" data-id="@item.MaGhe">
+                            Chi tiết
+                        </button> 
+                    </td>
+                </tr>
+            }
+
+
+
+        </table>
+        <div class="pagination justify-content-center">
+            <ul class="pagination">
+                @if (Model.PageCount > 1)
+                {
+                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Chair", new { page = 1, size = ViewBag.SelectedSize })">Đầu</a>
+                    </li>
+                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Chair", new { page = Model.PageNumber - 1, size = ViewBag.SelectedSize })">Trước</a>
+                    </li>
+
+                    for (int i = Math.Max(1, Model.PageNumber - 2); i <= Math.Min(Model.PageCount, Model.PageNumber + 2); i++)
+                    {
+                        <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Chair", new { page = i, size = ViewBag.SelectedSize })">@i</a>
+                        </li>
+                    }
+
+                    <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Chair", new { page = Model.PageNumber + 1, size = ViewBag.SelectedSize })">Sau</a>
+                    </li>
+                    <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Chair", new { page = Model.PageCount, size = ViewBag.SelectedSize })">Cuối</a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+    </div>
+</main>
+<div class="modal fade" id="addMovieModal" tabindex="-1" role="dialog" aria-labelledby="addMovieModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addMovieModalLabel">Add Chair</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Your form goes here -->
+                <!-- Add form fields here -->
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myForm", enctype = "multipart/form-data" }))
+                {
+
+                    @Html.AntiForgeryToken();
+                    <div class="form-group">
+                        <label for="TenGhe" class="control-label">Tên ghế</label>
+                        <input type="text" id="TenGhe" name="TenGhe" class="form-control" required />
+                        <span class="text-danger"> <!-- Validation message goes here --> </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="LoaiGhe" class="control-label">Loại ghế</label>
+                        <input type="text" id="LoaiGhe" name="LoaiGhe" class="form-control" required />
+                        <span class="text-danger"> <!-- Validation message goes here --> </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Gia" class="control-label">Giá</label>
+                        <input type="text" id="Gia" name="Gia" class="form-control" required />
+                        <span class="text-danger"> <!-- Validation message goes here --> </span>
+                    </div>
+
+
+                    <!-- Add other form fields as needed -->
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary huy-button" data-dismiss="modal">Close</button>
+                        <button id="saveChangesButton" type="submit" class="btn btn-primary">Save changes</button>
+                        <button id="ThemButton" type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="selectedItemId" />
+<script>
+    $(document).ready(function () {
+        $("#saveChangesButton").click(function () {
+            // Gọi hành động sửa ở đây
+            $("#myForm").attr("action", "/XuLy/EditGhe");
+            $("#myForm").submit();
+        });
+
+        $("#ThemButton").click(function () {
+            // Gọi hành động thêm ở đây
+            $("#myForm").attr("action", "/XuLy/AddGhe");
+            $("#myForm").submit();
+        });
+    });
+    function resetModalState() {
+        $("#MaGhe, #Gia, #MaPhong,#MaKH,#TenGhe,#LoaiGhe, #addMovieModalLabel").val("");
+        $("#saveChangesButton, #ThemButton").show();
+        $("#MaGhe, #Gia, #MaPhong,#MaKH,#TenGhe,#LoaiGhe, #addMovieModalLabel").prop("disabled", false);
+    }
+    $(document).ready(function () {
+
+
+        $(".createNewButton").click(function () {
+            resetModalState();
+            $("#addMovieModalLabel").val("Thêm");
+            $("#saveChangesButton").hide();
+            $("#addMovieModal").modal("show");
+        });
+    });
+    $(document).ready(function () {
+        $(".edit-button").click(function () {
+            resetModalState();
+            var itemId = $(this).data("id");
+            $("#selectedItemId").val(itemId);
+
+            // Gửi yêu cầu Ajax để lấy dữ liệu cho mục đã chọn
+            $.ajax({
+                url: '/XuLy/EditChair', // Thay thế bằng tên thực của controller và action
+                type: 'GET',
+                data: { id: itemId },
+                success: function (data) {
+                    $("#addMovieModalLabel").val("Sửa");
+                    // Điền dữ liệu vào các trường trong modal
+                    $("#MaGhe").val(data.ghe.MaGhe);
+                    $("#Gia").val(data.ghe.Gia);
+                    $("#MaPhong").val(data.ghe.MaPhong);
+                    $("#MaKH").val(data.ghe.MaKH);
+                    $("#TenGhe").val(data.ghe.TenGhe);
+                    $("#LoaiGhe").val(data.ghe.LoaiGhe);
+                    $("#ThemButton").hide();
+                    // Hiển thị modal
+                    $("#addMovieModal").modal("show");
+                },
+                error: function () {
+                    alert("Lỗi khi lấy dữ liệu.");
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $(".details-button").click(function () {
+            var itemId = $(this).data("id");
+            $("#selectedItemId").val(itemId);
+
+            // Gửi yêu cầu Ajax để lấy dữ liệu cho mục đã chọn
+            $.ajax({
+                url: '/XuLy/EditChair', // Thay thế bằng tên thực của controller và action
+                type: 'GET',
+                data: { id: itemId },
+                success: function (data) {
+                    $("#addMovieModalLabel").val("Chi tiết");
+                    // Điền dữ liệu vào các trường trong modal
+                    $("#MaGhe").val(data.ghe.MaGhe);
+                    $("#Gia").val(data.ghe.Gia);
+                    $("#MaPhong").val(data.ghe.MaPhong);
+                    $("#MaKH").val(data.ghe.MaKH);
+                    $("#TenGhe").val(data.ghe.TenGhe);
+                    $("#LoaiGhe").val(data.ghe.LoaiGhe);
+                    $("#ThemButton").hide();
+                    // Tắt khả năng chỉnh sửa các trường dữ liệu
+                    $("#MaGhe, #Gia, #MaPhong,#MaKH,#TenGhe,#LoaiGhe, #addMovieModalLabel").prop("disabled", true);
+                    // Hiển thị modal
+                    $("#addMovieModal").modal("show");
+                },
+                error: function () {
+                    alert("Lỗi khi lấy dữ liệu.");
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $('.delete-button').click(function (e) {
+            e.preventDefault();
+            var deleteUrl = $(this).attr('href');
+            $('#confirmDeleteButton').attr('href', deleteUrl);
+            $('#confirmDeleteModal').modal('show');
+        });
+    });
+    $(document).ready(function () {
+        $('.huy-button').click(function (e) {
+            $('#confirmDeleteModal').modal('hide');
+            $('#addMovieModal').modal('hide');
+        });
+    });
+
+
+
+
+</script>
+
+

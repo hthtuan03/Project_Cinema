@@ -1,0 +1,70 @@
+﻿.custom-container {
+    font-family: Arial, sans-serif;
+    background-color: #000; /* Phông nền màu đen */
+    color: #fff; /* Màu chữ trắng */
+    display: flex;
+    justify-content: center; /* Căn trang ra giữa theo chiều ngang */
+    align-items: center; /* Căn trang ra giữa theo chiều dọc */
+    margin: 40px auto;
+}
+
+.container-inner {
+    background-color: #000; /* Màu nền màu đen */
+    border: 0px solid #ddd;
+    padding: 20px;
+    display: flex;
+    flex-direction: row-reverse; /* Đảo ngược vị trí của hai phần tử bên phải và bên trái */
+    max-width: 100%; /* Thu nhỏ nội dung để vừa với viewport */
+    max-height: 80vh; /* Điều chỉnh chiều cao tối đa của nội dung */
+    overflow: auto; /* Cho phép cuộn khi nội dung quá lớn */
+}
+
+.movie-details img {
+    max-width: 100%; /* Thu nhỏ hình ảnh để vừa với nội dung */
+    height: auto;
+    transition: transform 0.3s ease; /* Thêm hiệu ứng chuyển đổi */
+}
+
+    .movie-details img:hover {
+        transform: scale(1.1); /* Hiệu ứng phóng to khi di chuột qua */
+    }
+
+.movie-details .details-right {
+    margin-right: 20px; /* Khoảng cách bên phải */
+}
+
+.btn-custom {
+    background-color: #f00; /* Màu đỏ cho nút */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+.custom-button {
+    width: 100px; /* Điều chỉnh chiều rộng của nút theo ý muốn */
+}
+    .btn-custom:hover {
+        background-color: #a00; /* Màu đỏ khi hover */
+    }
+.custom-button {
+    width: 100px;
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* Tỷ lệ khung hình video (16:9) */
+    padding-top: 30px;
+    height: 0;
+    overflow: hidden;
+}
+
+    .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }

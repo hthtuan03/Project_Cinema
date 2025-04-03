@@ -1,0 +1,134 @@
+﻿/*<========Tittle=============================================>*/
+
+.mh {
+    color: white;
+}
+
+.title {
+    display: flex;
+    font-family: 'Trade Winds';
+    transition: 0.5s all ease;
+    padding: 20% 20%;
+    padding-bottom: 0;
+}
+
+.typed-cursor {
+    font-size: 35px;
+}
+
+.th {
+    display: flex;
+    padding-left: 20%;
+    font-family: 'Gruppo';
+    font-style: italic;
+    font-size: 20px;
+}
+
+.outb {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4vw;
+    text-transform: uppercase;
+    font-family: 'Megrim';
+    position: relative;
+}
+
+.in1 {
+    color: transparent;
+}
+
+.in2 {
+    color: transparent;
+    position: absolute;
+}
+
+.in3 {
+    color: transparent;
+    position: absolute;
+}
+
+.in1::before {
+    content: attr(data-text);
+    position: absolute;
+    margin: left 5px;
+    color: orangered;
+    border-right: 2px solid orangered;
+    width: 0px;
+    overflow: hidden;
+    animation: slide 6s linear infinite;
+    animation-delay: 7s;
+    border-width: 0;
+}
+
+.in2::before {
+    content: attr(data-text);
+    position: absolute;
+    margin: left 5px;
+    color: green;
+    border-right: 2px solid green;
+    width: 0px;
+    overflow: hidden;
+    animation: slide1 6s linear infinite;
+    animation-delay: 7s;
+    border-width: 0;
+}
+
+.in3::before {
+    content: attr(data-text);
+    position: absolute;
+    margin: left 5px;
+    color: rgba(255, 255, 0, 0.342);
+    border-right: 2px solid yellow;
+    width: 0px;
+    overflow: hidden;
+    animation: slide2 6s linear infinite;
+    animation-delay: 7s;
+    border-width: 0;
+}
+
+@keyframes slide {
+    15% {
+        width: 200px;
+        border-width: 2px;
+    }
+
+    30%, 100% {
+        width: 0px;
+        border-width: 0;
+    }
+}
+
+@keyframes slide1 {
+    0%, 30% {
+        width: 0px;
+        border-width: 0;
+    }
+
+    45% {
+        width: 200px;
+        border-width: 2px;
+    }
+
+    60%, 100% {
+        width: 0px;
+        border-width: 0;
+    }
+}
+
+@keyframes slide2 {
+    0%, 60% {
+        width: 0px;
+        border-width: 0;
+    }
+
+    75% {
+        width: 250px;
+        border-width: 2px;
+    }
+
+    100% {
+        width: 0px;
+        border-width: 0;
+    }
+}

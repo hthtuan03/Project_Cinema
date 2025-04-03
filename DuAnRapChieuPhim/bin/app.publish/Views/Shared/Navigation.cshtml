@@ -1,0 +1,48 @@
+﻿@{ 
+    var user = Session["KH"] as DuAnRapChieuPhim.Models.ThongTinCaNhan;
+}
+<div class="main">
+    <div id="Nav">
+        <h1 id="logo">
+            MCT
+        </h1>
+        <!--============================Navigation Menu====================-->
+        <ul class="nbm">
+            <li><a href="~/Home/Index">Trang chủ</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Phim <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="~/Home/MovieShow">Phim đang chiếu</a></li>
+                    <li><a href="~/Home/MovieSoone">Phim sắp chiếu</a></li>
+                </ul>
+            </li>
+            <li><a href="~/Home/News">Tin tức & ưu đãi </a></li>
+
+            @if (user == null)
+            {
+                <li><a href="~/Home/Login">Vé của tôi</a></li>
+            }
+            else
+            {
+                <li><a href="~/Home/Ve">Vé của tôi</a></li>
+            }
+            @if (user == null)
+            {
+                <li><a href="~/Home/Login">Đăng nhập/ Đăng ký</a></li>
+            }
+            else
+            {
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Xin chào @user.Ten  <span class="caret"></span></a>
+            <ul class="dropdown-menu dropdown-menu-right">
+                <li><a href="~/Home/ThongTin">Thông tin cá nhân</a></li>
+                <li><a href="~/Home/Logout">Thoát</a></li>
+            </ul>
+        </li>
+    }
+
+</ul>
+    </div>
+</div>
+
+

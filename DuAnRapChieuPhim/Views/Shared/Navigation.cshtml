@@ -1,0 +1,185 @@
+﻿@{
+    var token = Request.Cookies["AuthToken"]?.Value;
+    DuAnRapChieuPhim.Models.ThongTinCaNhan user = null;
+
+    if (!string.IsNullOrEmpty(token))
+    {
+        try
+        {
+            // Thực hiện giải mã JWT
+            var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.ReadJwtToken(token);
+
+            // Trích xuất thông tin người dùng từ token
+            var userId = jwtToken.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value;
+            var userName = jwtToken.Claims.FirstOrDefault(x => x.Type == "UserName")?.Value;
+
+            if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(userName))
+            {
+                user = new DuAnRapChieuPhim.Models.ThongTinCaNhan
+                {
+                    MaKH = int.Parse(userId),
+                    Ten = userName
+                };
+            }
+        }
+        catch (Exception ex)
+        {
+            // Xử lý lỗi nếu token không hợp lệ
+            user = null;
+        }
+    }
+}
+
+
+@using DuAnRapChieuPhim.Helpers
+
+<style>
+    .dropdown-item img {
+        width: 20px; /* Điều chỉnh kích thước hình ảnh */
+        height: auto; /* Giữ tỷ lệ khung hình */
+        margin-right: 8px; /* Khoảng cách bên phải của hình ảnh */
+        vertical-align: middle; /* Căn giữa hình ảnh với văn bản */
+    }
+
+    .dropdown-item {
+        padding: 5px 15px; /* Khoảng cách cho các mục trong dropdown */
+    }
+
+    .dropdown-menu {
+        padding: 0; /* Loại bỏ khoảng cách padding mặc định */
+        border-radius: 4px; /* Tạo các góc tròn cho dropdown */
+    }
+
+    .dropdown-toggle {
+        border: none; /* Loại bỏ đường viền của nút dropdown */
+        background: transparent; /* Làm nền trong suốt */
+        color: inherit; /* Sử dụng màu văn bản của phần tử cha */
+    }
+
+        .dropdown-toggle:hover {
+            background: #f8f9fa; /* Thay đổi màu nền khi hover */
+        }
+
+    .dropdown-menu {
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+        .dropdown-menu li a {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            color: #333; /* Thay đổi màu chữ */
+        }
+
+            .dropdown-menu li a:hover {
+                background-color: #f0f0f0; /* Màu nền khi hover */
+            }
+</style>
+<div class="main">
+    <div id="Nav">
+        <div class="col-md-3">
+            <!--============================LOGO====================-->
+            <a href="~/Home/Index"> <img style="width:80%;" src="~/IMG/cinemaa.png" /></a>
+
+        </div>
+
+
+        <div style="margin-left:20px" class="col-md-6 nav">
+            <ul class="nbm">
+                <li><a href="@LocalizationHelper.LocalizedAction("Index", "Home")">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav1")</a></li>
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav2") <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="@LocalizationHelper.LocalizedAction("MovieShow", "Home")">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav2_1")</a></li>
+                        <li><a href="@LocalizationHelper.LocalizedAction("MovieSoone", "Home")">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav2_2")</a></li>
+                    </ul>
+                </li>
+                <li><a href="@LocalizationHelper.LocalizedAction("News", "Home") ">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav3") </a></li>
+                <li>
+                    <a href="@LocalizationHelper.LocalizedAction("Blog", "Home")">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav4") </a>
+
+                </li>
+                <li>
+                    <a href="@LocalizationHelper.LocalizedAction("DSVoucher", "Home")">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav4_1")</a>
+
+                </li>
+            </ul>
+        </div>
+
+        <div style="text-align:left; margin: auto" class="col-md-3">
+            <ul class="nbm">
+                @if (user == null)
+                {
+
+                    <li>
+
+                        <a class="fa-solid fa-qrcode" href="~/Home/QRCheck"></a>
+                        <a class="input-icon uil-user-circle" href="~/Home/Login">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav5")</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="dropdown">
+                        <a class="input-icon uil-user-circle" href="#" data-toggle="dropdown">@user.Ten <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="~/Home/ThongTin">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav5_1")</a></li>
+                            <li><a href="~/Home/Ve">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav5_2")</a></li>
+                          
+                            <li><a href="~/Home/Logout">@DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("nav5_3")</a></li>
+                        </ul>
+                    </li>
+                }
+                <li class="dropdown" style="display: inline-block; margin-left: 10px;">
+                    <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        @DuAnRapChieuPhim.Helpers.LocalizationHelper.GetResource("language")
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="~/Home/Index?lang=vi">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKiwfNiZwghTOfXA81N98q5q83XDlpOwrtyg&s" alt="Tiếng Việt" style="width: 20px; height: auto; margin-right: 5px;" />
+                                Tiếng Việt
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/Home/Index?lang=en">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/285px-Flag_of_the_United_States.svg.png" alt="English" style="width: 20px; height: auto; margin-right: 5px;" />
+                                English
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+            </ul>
+
+        </div>
+
+
+
+
+
+
+
+
+        <script>
+            window.onscroll = function () {
+                var nav = document.getElementById("Nav");
+                if (window.pageYOffset > 50) { // Change background when scroll passes 50px
+                    nav.classList.add("scrolled");
+                } else {
+                    nav.classList.remove("scrolled");
+
+                }
+            };
+
+
+
+        </script>
+
+    </div>
+
+</div>
+
+

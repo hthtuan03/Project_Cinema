@@ -1,0 +1,287 @@
+﻿@{
+    var token = Request.Cookies["AuthToken"]?.Value;
+    DuAnRapChieuPhim.Models.ThongTinCaNhan user = null;
+
+    if (!string.IsNullOrEmpty(token))
+    {
+        try
+        {
+            // Thực hiện giải mã JWT
+            var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.ReadJwtToken(token);
+
+            // Trích xuất thông tin người dùng từ token
+            var userId = jwtToken.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value;
+            var userName = jwtToken.Claims.FirstOrDefault(x => x.Type == "UserName")?.Value;
+
+            if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(userName))
+            {
+                user = new DuAnRapChieuPhim.Models.ThongTinCaNhan
+                {
+                    MaKH = int.Parse(userId),
+                    Ten = userName
+                };
+            }
+        }
+        catch (Exception ex)
+        {
+            // Xử lý lỗi nếu token không hợp lệ
+            user = null;
+        }
+    }
+}
+
+@model IEnumerable<DuAnRapChieuPhim.Models.Ghe>
+<!DOCTYPE html>
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<link rel="stylesheet" href="~/Content/style2.css">
+
+<body style="background-size:100%;background-image: url(https://t4.ftcdn.net/jpg/02/86/32/31/360_F_286323187_mDk3N4nGDaPkUmhNcdBe3RjSOfKqx4nZ.jpg)">
+
+    <div class="movie-container">
+        <a href="~/Home/Index"> <img style="width: 50%; margin-left: 300px;" src="~/IMG/cinemaa.png" /></a>
+        <p style="text-align:center;"></p>
+    </div>
+
+    <div id="notification" style="display:none; text-align: center; color: black;font-size:30px; font-weight: bold; margin-bottom: 20px;"></div>
+
+    <div class="container">
+        <div style="width: 100%; height: 20px; background-color: rgb(245, 236, 189); margin: 20px 0; box-shadow: 0 3px 12px rgba(255, 255, 255, 0.7); border-radius: 521% 521% 50% 50%; transform: rotateX(-45deg);" class="screen"></div>
+
+        @for (int i = 0; i < Model.Count(); i += 8)
+        {
+            <div class="row">
+                @for (int j = 0; j < 8; j++)
+                {
+                    var index = i + j;
+                    if (index < Model.Count())
+                    {
+                        var ghe = Model.ElementAt(index);
+                        if (ghe.TrangThai.Contains("Trống"))
+                        {
+                            <div class="seat" style="color: black; width: 45px;text-align:center;border-radius:6px ;height: 20px;font-weight:bold" data-giatien="@ghe.GiaTien" data-ten="@ghe.MaGhe">
+                                @ghe.TenGhe
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="seat occupied" style="color: black; width: 45px; text-align: center; border-radius: 6px; height: 20px; font-weight: bold">@ghe.TenGhe</div>
+                        }
+                    }
+                }
+            </div>
+        }
+    </div>
+
+
+
+    <ul style="padding: 5px 10px; position: fixed; color: black; border-radius: 5px; list-style-type: none; display: inline; text-align: center; margin-left: 800px; margin-top: 200px;">
+        <li>
+            <div style="border-radius: 6px;" class="seat">A0</div>
+            <small>Còn trống</small>
+        </li>
+        <li>
+            <div style="border-radius: 6px;" class="seat selected">A0</div>
+            <small>Đang chọn</small>
+        </li>
+        <li>
+            <div style="border-radius: 6px;" class="seat occupied">A0</div>
+            <small>Đã được chọn</small>
+        </li>
+    </ul>
+
+    <ul style="padding: 5px 10px; position: fixed; color: greenyellow; border-radius: 5px; list-style-type: none; display: inline; text-align: center; font-size: 14px; margin-right: 600px; margin-top: 170px;">
+        <p>A</p>
+        <p>B</p>
+        <p>C</p>
+        <p>D</p>
+        <p>Couple</p>
+        <p>Couple</p>
+    </ul>
+
+    <div>
+        <p style="color:white" class="text">Bạn đã chọn <span class="span" id="count">0</span> ghế ngồi. Tạm Tính :<span class="span" id="ss">0</span></p>
+    </div>
+    <!-- Timer display area -->
+    <div id="timer" style="text-align: center; color: black; font-size: 24px; font-weight: bold; margin-bottom: 20px;">
+        Thời gian giữ ghế: <span id="countdown">30</span> giây
+    </div>
+    <center>
+        @if (user != null)
+        {
+            <a id="openbot" style="text-decoration: none; cursor: pointer;" onclick="redirectToCombo()">Tiếp Theo</a>
+        }
+        else
+        {
+            <a id="openbot" style=" text-decoration: none;" href="~/Home/Login">Tiếp Theo</a>
+        }
+    </center>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+
+    <script>
+        function redirectToCombo() {
+            if (typeof window.totalGiaTien !== "undefined") {
+                var selectedSeatsJson = JSON.stringify(window.selectedSeats);
+                var encodedSelectedSeats = encodeURIComponent(selectedSeatsJson);
+                window.location.href = "Combo?totalGiaTien=" + window.totalGiaTien + "&selectedSeats=" + encodedSelectedSeats;
+            } else {
+                alert("Vui lòng chọn ghế trước khi chuyển đến Combo.");
+            }
+        }
+        $(function () {
+            var hub = $.connection.datVe;
+
+            var seatTimers = {};
+
+            function startTimer() {
+                var countdownElement = $("#countdown");
+                var timeLeft = 30; // 30s
+
+                if (window.seatTimer) {
+                    clearInterval(window.seatTimer);
+                }
+
+                window.seatTimer = setInterval(function () {
+                    if (timeLeft <= 0) {
+                        clearInterval(window.seatTimer);
+                        hub.server.timeoutAllSeats();
+                    } else {
+                        timeLeft--;
+                        countdownElement.text(timeLeft);
+                    }
+                }, 1000);
+            }
+
+            function stopTimer() {
+                if (window.seatTimer) {
+                    clearInterval(window.seatTimer);
+                }
+                $("#countdown").text(30); // Reset to initial value
+            }
+
+            function revertSeat(MaGhe) {
+                var seat = $(".seat[data-ten='" + MaGhe + "']");
+                if (seat.length > 0) {
+                    seat.removeClass("selected occupied");
+                    seat.on("click", function () {
+                        container.click();
+                    });
+                    updateCountAndTotal();
+                }
+            }
+
+            hub.client.receiveSeatStatus = function (MaGhe, status) {
+                var seat = $(".seat[data-ten='" + MaGhe + "']");
+                if (seat.length > 0) {
+                    seat.text(status);
+                }
+            };
+
+            hub.client.lockSeat = function (MaGhe) {
+                var seat = $(".seat[data-ten='" + MaGhe + "']");
+                if (seat.length > 0) {
+                    seat.addClass("occupied");
+                    seat.off("click");
+                }
+            };
+
+            hub.client.unlockSeat = function (MaGhe) {
+                var seat = $(".seat[data-ten='" + MaGhe + "']");
+                if (seat.length > 0) {
+                    seat.removeClass("occupied");
+                    seat.on("click", function () {
+                        container.click();
+                    });
+                }
+            };
+
+            hub.client.revertSeat = function (MaGhe) {
+                revertSeat(MaGhe);
+            };
+
+            $.connection.hub.start().done(function () {
+                console.log('SignalR Đã Kết Nối Thành Công !');
+            }).fail(function () {
+                console.log('SignalR Kết Nối Thất bại !');
+            });
+
+            const container = document.querySelector(".container");
+            const seats = document.querySelectorAll(".row .seat:not(.occupied)");
+            let count = document.getElementById("count");
+            let notification = document.getElementById("notification");
+
+            function setMovieData(movieIndex) {
+                localStorage.setItem("selectedMovieIndex", movieIndex);
+            }
+
+            window.selectedSeats = [];
+
+            function updateCountAndTotal() {
+                let selectedSeatsCount = document.querySelectorAll(".row .seat.selected");
+                count.innerHTML = selectedSeatsCount.length;
+                window.selectedSeats = Array.from(selectedSeatsCount).map(seat => seat.getAttribute("data-ten"));
+
+                let totalGiaTien = 0;
+                selectedSeatsCount.forEach((seat) => {
+                    let giatien = seat.getAttribute("data-giatien");
+                    totalGiaTien += parseFloat(giatien);
+                });
+
+                let formattedTotal = new Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                }).format(totalGiaTien);
+
+                window.totalGiaTien = totalGiaTien;
+                document.getElementById("ss").innerHTML = formattedTotal;
+            }
+
+            function populateUI() {
+                const selectedSeats = JSON.parse(localStorage.getItem("seatIndex"));
+                if (selectedSeats !== null && selectedSeats.length > 0) {
+                    seats.forEach((seat, index) => {
+                        if (selectedSeats.indexOf(index) > -1) {
+                            seat.classList.add("selected");
+                        }
+                    });
+                }
+            }
+
+            container.addEventListener("click", (e) => {
+                if (e.target.classList.contains("seat")) {
+                    if (e.target.classList.contains("occupied")) {
+                        notification.innerText = "Ghế đang có người chọn, Vui lòng chọn ghế khác !";
+                        notification.style.display = "block";
+                        setTimeout(() => {
+                            notification.style.display = "none";
+                        }, 3000);
+                    } else {
+                        if (e.target.classList.contains("selected")) {
+                            e.target.classList.remove("selected");
+                            var MaGhe = e.target.getAttribute("data-ten");
+                            hub.server.deselectSeat(MaGhe);
+                            clearTimeout(seatTimers[MaGhe]);
+                            stopTimer(); // Stop the timer when a seat is deselected
+                        } else {
+                            e.target.classList.add("selected");
+                            var MaGhe = e.target.getAttribute("data-ten");
+                            hub.server.selectSeat(MaGhe);
+                            startTimer(); // Start the timer when a seat is selected
+
+                            seatTimers[MaGhe] = setTimeout(() => {
+                                hub.server.timeoutSeat(MaGhe);
+                            }, 30000);
+                        }
+                        updateCountAndTotal();
+                    }
+                }
+            });
+
+            updateCountAndTotal();
+            populateUI();
+        });
+    </script>
+</body>

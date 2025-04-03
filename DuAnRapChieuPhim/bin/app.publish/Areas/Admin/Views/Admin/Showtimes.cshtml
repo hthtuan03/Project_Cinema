@@ -1,0 +1,333 @@
+﻿@model IPagedList<DuAnRapChieuPhim.Models.LichChieu>
+@using PagedList
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Showtimes";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- Navbar
+                </div>
+
+            </div>
+        </div>-->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                    <div class="input-group input-group-outline">
+                        <label class="form-label">Type here...</label>
+                        <input type="text" class="form-control">
+                    </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+
+        <button type="button" class="btn btn-primary createNewButton" data-toggle="modal" data-target="#addMovieModal">
+            Thêm Lịch 
+        </button>
+        <table class="table">
+            <tr>
+                <th>
+                    Ngôn ngữ
+                </th>
+                <th>
+                    Giới thiệu
+                </th>
+                <th>
+                    Giờ kết thúc
+                </th>
+                <th>
+                    Phòng
+                </th>
+                <th>
+                    Mã phim
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NgonNgu)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GioChieu)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GioKetThuc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phong)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaPhim)
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary edit-button" data-toggle="modal" data-target="#editMovieModal" data-id="@item.MaChieuPhim">
+                            Sửa
+                        </button>                          |
+                        <button type="button" class="btn btn-info details-button" data-toggle="modal" data-target="#detailsMovieModal" data-id="@item.MaChieuPhim">
+                            Chi tiết
+                        </button> |
+                        <button type="button" class="btn btn-danger delete-button" data-toggle="modal" data-target="#deleteConfirmationModal" data-id="@item.MaChieuPhim">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+
+        </table>
+        <div class="pagination justify-content-center">
+            <ul class="pagination">
+                @if (Model.PageCount > 1)
+                {
+                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Showtimes", new { page = 1, size = ViewBag.SelectedSize })">Đầu</a>
+                    </li>
+                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Showtimes", new { page = Model.PageNumber - 1, size = ViewBag.SelectedSize })">Trước</a>
+                    </li>
+                    for (int i = 1; i <= Model.PageCount; i++)
+                    {
+                        <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Showtimes", new { page = i, size = ViewBag.SelectedSize })">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Showtimes", new { page = Model.PageNumber + 1, size = ViewBag.SelectedSize })">Sau</a>
+                    </li>
+                    <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Showtimes", new { page = Model.PageCount, size = ViewBag.SelectedSize })">Cuối</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</main>
+<div class="modal fade" id="addMovieModal" tabindex="-1" role="dialog" aria-labelledby="addMovieModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addMovieModalLabel">Add New Movie</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Your form goes here -->
+                <!-- Add form fields here -->
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myForm", enctype = "multipart/form-data" }))
+                {
+
+                    @Html.AntiForgeryToken();
+                    <div class="form-group">
+                        <label for="NgonNgu" class="control-label">Ngôn Ngữ</label>
+                        <input type="text" id="NgonNgu" name="NgonNgu" class="form-control" required />
+                        <span class="text-danger"> <!-- Validation message goes here --> </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="GioChieu" class="control-label">Giờ Chiếu</label>
+                        <input type="text" id="GioChieu" name="GioChieu" class="form-control" required />
+                        <span class="text-danger"> <!-- Validation message goes here --> </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="GioKetThuc" class="control-label">Giờ Kết Thúc </label>
+                        <input type="text" id="GioKetThuc" name="GioKetThuc" class="form-control" required />
+                        <span class="text-danger"> <!-- Validation message goes here --> </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Phong" class="control-label">Phòng</label>
+
+                        <!-- Sử dụng thẻ <select> để tạo combobox -->
+                        <select id="Phong" name="Phong" class="form-control" required>
+                            <!-- Sử dụng Razor để lặp qua danh sách dữ liệu từ ViewBag.MaDoAn -->
+                            @foreach (var maDoAn in ViewBag.Phong)
+                            {
+                                <option value="@maDoAn.MaPhong">@maDoAn.MaPhong</option>
+                            }
+                        </select>
+
+                        <span class="text-danger"><!-- Validation message goes here --></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="MaPhim" class="control-label">Mã Phim</label>
+
+                        <!-- Sử dụng thẻ <select> để tạo combobox -->
+                        <select id="MaPhim" name="MaPhim" class="form-control" required>
+                            <!-- Sử dụng Razor để lặp qua danh sách dữ liệu từ ViewBag.MaDoAn -->
+                            @foreach (var maDoAn in ViewBag.Phim)
+                            {
+                                <option value="@maDoAn.MaPhim">@maDoAn.MaPhim</option>
+                            }
+                        </select>
+
+                        <span class="text-danger"><!-- Validation message goes here --></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="NgayChieu" class="control-label">Ngày chiếu</label>
+                        <input type="text" id="NgayChieu" name="NgayChieu" class="form-control" required />
+                        <span class="text-danger"> <!-- Validation message goes here --> </span>
+                    </div>
+                }
+                <!-- Add other form fields as needed -->
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary huy-button" data-dismiss="modal">Close</button>
+                    <button id="saveChangesButton" type="submit" class="btn btn-primary">Save changes</button>
+                    <button id="ThemButton" type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="selectedItemId" />
+<script>
+
+    $(document).ready(function () {
+        $("#saveChangesButton").click(function () {
+            // Gọi hành động sửa ở đây
+            $("#myForm").attr("action", "/XuLy/EditLC");
+            $("#myForm").submit();
+        });
+
+        $("#ThemButton").click(function () {
+            // Gọi hành động thêm ở đây
+            $("#myForm").attr("action", "/XuLy/AddLichChieu");
+            $("#myForm").submit();
+        });
+    });
+    function resetModalState() {
+        $("#NgayChieu, #NgonNgu, #GioChieu, #GioKetThuc,#Phong,#MaPhim, #addMovieModalLabel").val("");
+        $("#saveChangesButton, #ThemButton").show();
+        $("#NgayChieu, #NgonNgu, #GioChieu, #GioKetThuc,#Phong,#MaPhim").prop("disabled", false);
+    }
+    $(document).ready(function () {
+
+
+        $(".createNewButton").click(function () {
+            resetModalState();
+            $("#addMovieModalLabel").val("Thêm");
+            $("#saveChangesButton").hide();
+            $("#addMovieModal").modal("show");
+        });
+    });
+    $(document).ready(function () {
+        $(".edit-button").click(function () {
+            resetModalState();
+            var itemId = $(this).data("id");
+            $("#selectedItemId").val(itemId);
+
+            // Gửi yêu cầu Ajax để lấy dữ liệu cho mục đã chọn
+            $.ajax({
+                url: '/XuLy/EditShowTime', // Thay thế bằng tên thực của controller và action
+                type: 'GET',
+                data: { id: itemId },
+                success: function (data) {
+                    $("#addMovieModalLabel").val("Sửa");
+                    // Điền dữ liệu vào các trường trong modal
+                    $("#NgonNgu").val(data.lc.NgonNgu);
+                    $("#GioChieu").val(data.lc.GioChieu);
+                    $("#GioKetThuc").val(data.lc.GioKetThuc);
+                    $("#Phong").val(data.lc.Phong);
+                    $("#MaPhim").val(data.lc.MaPhim);
+                    $("#NgayChieu").val(formatDate(data.lc.NgayChieu));
+                    $("#ThemButton").hide();
+                    // Hiển thị modal
+                    $("#addMovieModal").modal("show");
+                },
+                error: function () {
+                    alert("Lỗi khi lấy dữ liệu.");
+                }
+            });
+        });
+    });
+    function formatDate(jsonDate) {
+        // Parse the JSON date and create a JavaScript Date object
+        var date = new Date(parseInt(jsonDate.substr(6)));
+
+        // Format the date as desired (adjust the format as needed)
+        var formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+
+        return formattedDate;
+    }
+    $(document).ready(function () {
+        $(".details-button").click(function () {
+            var itemId = $(this).data("id");
+            $("#selectedItemId").val(itemId);
+
+            // Gửi yêu cầu Ajax để lấy dữ liệu cho mục đã chọn
+            $.ajax({
+                url: '/XuLy/EditShowTime', // Thay thế bằng tên thực của controller và action
+                type: 'GET',
+                data: { id: itemId },
+                success: function (data) {
+                    $("#addMovieModalLabel").val("Chi tiết");
+                    // Điền dữ liệu vào các trường trong modal
+                    $("#NgonNgu").val(data.lc.NgonNgu);
+                    $("#GioChieu").val(data.lc.GioChieu);
+                    $("#GioKetThuc").val(data.lc.GioKetThuc);
+                    $("#Phong").val(data.lc.Phong);
+                    $("#MaPhim").val(data.lc.MaPhim);
+                    $("#NgayChieu").val(formatDate(data.lc.NgayChieu));
+                    $("#saveChangesButton").hide();
+                    $("#ThemButton").hide();
+                    // Tắt khả năng chỉnh sửa các trường dữ liệu
+                    $("#NgayChieu, #NgonNgu, #GioChieu, #GioKetThuc,#Phong,#MaPhim").prop("disabled", true);
+                    // Hiển thị modal
+                    $("#addMovieModal").modal("show");
+                },
+                error: function () {
+                    alert("Lỗi khi lấy dữ liệu.");
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $('.delete-button').click(function (e) {
+            e.preventDefault();
+            var deleteUrl = $(this).attr('href');
+            $('#confirmDeleteButton').attr('href', deleteUrl);
+            $('#confirmDeleteModal').modal('show');
+        });
+    });
+    $(document).ready(function () {
+        $('.huy-button').click(function (e) {
+            $('#confirmDeleteModal').modal('hide');
+            $('#addMovieModal').modal('hide');
+        });
+    });
+    $(document).ready(function () {
+        $('#myForm').submit(function (e) {
+            e.preventDefault();
+
+            var ngayChieu = $('#NgayChieu').val();
+            var gioChieu = $('#GioChieu').val();
+            var gioKetThuc = $('#GioKetThuc').val();
+            var phong = $('#Phong').val();
+
+            var selectedDate = new Date(ngayChieu + ' ' + gioChieu);
+            var selectedEndDate = new Date(ngayChieu + ' ' + gioKetThuc);
+
+            $.ajax({
+                url: '/XuLy/CheckScheduleConflict',
+                type: 'POST',
+                data: { NgayChieu: ngayChieu, GioChieu: gioChieu, GioKetThuc: gioKetThuc, Phong: phong },
+                success: function (result) {
+                    if (result.isConflict) {
+                        alert('Vui lòng nhập lại dữ liệu bởi vì thời gian chiếu hoặc thời gian kết thúc bạn nhập phòng đó đang được sử dụng vào thời điểm đó.');
+                    } else {
+                        // If no conflict, submit the form
+                        $('#myForm').unbind('submit').submit();
+                    }
+                },
+                error: function () {
+                    alert('Error checking schedule conflict. Please try again.');
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,436 @@
+﻿* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    color: rgba(255, 254, 254, 0.849);
+    background-size: initial;
+    background-image: url(https://cellphones.com.vn/sforum/wp-content/uploads/2021/01/Transition-Space-iphone-wallpaper-AR72014-idownloadblog-blue-710x1536-1.jpeg);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.main {
+    background-image: url(~/IMG/bg.gif);
+    height: 0px;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+/*<========L0G0=============================================>*/
+
+
+/*<=====Navigation Bar=======================================>*/
+
+#Nav {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    margin: auto;
+    width: 100%;
+    padding: 20px 5%;
+    font-family:"Josefin Sans";
+    font-size:22px;
+    transition: 0.5s ease-out;
+}
+
+.col-md-6 nav{
+    margin-left:40px;
+}
+/*<=====Navigation Menu=======================================>*/
+
+ul.nbm {
+    display: table;
+    width: 80%;
+    text-align: center;
+    margin-top: 20px;
+    margin-right:100px;
+}
+
+ul.nbm>li {
+    /*Making every element of list as table cell*/
+    display: table-cell;
+}
+
+ul li a {
+    color: rgba(223, 217, 217, 0.842);
+    transition: 0.5s all ease;
+}
+
+ul li a:hover {
+    color: red;
+    transition: 0.5s all ease;
+}
+
+
+
+
+/*<========Characters=============================================>*/
+
+.hc {
+    font-family: 'Josefin Sans';
+    font-size: 22px;
+    padding: 25px 25px 0px 25px;
+    text-align:center;
+    color: white;
+}
+
+.smallb {
+    align-items: center;
+    border-radius: 25px;
+    background-color: snow;
+    color: black;
+    width: 200px;
+    height: 350px;
+    font-family: 'Josefin Sans';
+    font-size: 10px;
+}
+
+.smallb:hover {
+    background-color: red;
+    transition: 0.75s;
+    color: white;
+}
+
+.smallb img {
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    width: 200px;
+    height: 300px;
+    top: 0;
+}
+
+td {
+    width: 2000px;
+}
+
+.sec2 {
+    position: relative;
+    text-align: center;
+}
+
+.para {
+    padding: 20px 20px 20px 20px;
+    font-family: 'Gruppo';
+    font-size: 20px;
+}
+
+.btn {
+    border-radius: 25px;
+    background-color: snow;
+    
+    border: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 80%;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: red;
+    color: white;
+    width: 100px;
+    transition: 0.5s all ease;
+}
+
+
+/*<========Footer=============================================>*/
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+footer {
+    background: rgba(128, 128, 128, 0.301);
+    height: 200px;
+}
+
+.footer {
+    margin-top: 50px;
+    position: relative;
+    font-family: 'Josefin Sans';
+    width: 100%;
+    min-height: 100px;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+.footer img {
+    width: 60%;
+}
+.footer-bottom{
+    text-align:center;
+}
+
+.social-icon,
+.menu {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+    flex-wrap: wrap;
+}
+
+.social-icon__item,
+.menu__item {
+    list-style: none;
+}
+
+.social-icon__link {
+    font-size: 2rem;
+    color: #fff;
+    margin: 0 10px;
+    display: inline-block;
+    transition: 0.5s;
+}
+
+.social-icon__link:hover {
+    transform: translateY(-10px);
+    color: darkred;
+}
+
+.menu__link {
+    font-size: 1.2rem;
+    color: #fff;
+    margin: 0 10px;
+    display: inline-block;
+    transition: 0.5s;
+    text-decoration: none;
+    opacity: 0.75;
+    font-weight: 300;
+}
+
+.menu__link:hover {
+    opacity: 1;
+}
+
+
+
+#fi {
+    border-radius: 25px;
+    width: 200px;
+    float: left;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    padding-bottom: 0;
+}
+
+div.main_flim {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+div.box {
+    padding: 0;
+}
+
+.box {
+    position: relative;
+    width: 250px;
+    perspective: 1000px;
+    transition: all 0.5s ease-in-out 0.5s;
+}
+
+    .box:hover {
+        transform: scale(1.1);
+        box-shadow: 1px 2px 10px 5px solid #000;
+    }
+
+    .box .box-img {
+        transform: rotatey(0);
+        transition: all 0.5s ease-in-out 0s;
+    }
+
+    .box:hover .box-img {
+        transform: rotatey(-90deg);
+    }
+
+    .box .box-img img {
+        width: 250px;
+        height: 380px;
+        border: 2px solid #000;
+        border-radius: 10px;
+    }
+
+    .box .content {
+        color: white;
+        background: rgba(0, 0, 0, 0.8);
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        padding: 90px 20px;
+        box-sizing: border-box;
+        text-align: center;
+        border-radius: 10px;
+        transform: rotateY(90deg);
+        transition: all 0.5s ease-in-out 0s;
+    }
+
+    .box:hover .content {
+        transform: rotateY(0);
+    }
+
+    .box .content p {
+        border-top: 1px solid white;
+        border-bottom: 1px solid white;
+        padding: 20px 0;
+        margin: 0 25px;
+    }
+
+    .box .button {
+        background: none;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        padding: 90px 20px;
+        box-sizing: border-box;
+        text-align: center;
+        align-items: center;
+        transform: rotateY(90deg);
+        transition: all 0.5s ease-in-out 0s;
+    }
+
+    .box:hover .button {
+        transform: rotateX(0);
+    }
+
+    .box .button li {
+        list-style: none;
+        padding: 15px 0;
+    }
+
+        .box .button li a {
+            color: white;
+            text-decoration: none;
+            border: 1px solid white;
+            padding: 5px 10px;
+            background: #27ae60;
+            border-radius: 50px;
+        }
+
+            .box .button li a:hover {
+                background: #10890c;
+            }
+
+/*movie*/
+/* CSS cho phần chi tiết phim */
+/* CSS cho phần chi tiết phim */
+.movie-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.movie {
+    width: 300px;
+    margin: 20px;
+    padding: 10px;
+    border: 0px #ddd;
+    text-align: center;
+}
+
+.movie-image {
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+    .movie-image:hover {
+        transform: scale(1.1); /* Hiệu ứng thu nhỏ khi rê chuột vào */
+    }
+
+.movie h2 {
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+.movie p {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.movie-button-container {
+    height: 100%; /* Để nút chiếm toàn bộ chiều cao của container */
+    margin-right: 110px;
+}
+
+.btn-custom-size {
+    font-size: 16px; /* Điều chỉnh kích thước chữ */
+    padding: 10px 30px; /* Điều chỉnh kích thước nút */
+}
+.movie-button-container button.btn-primary:hover {
+    background-color: red; /* Màu nền mà bạn muốn khi trỏ chuột vào */
+    border-color: red; /* Màu viền nếu cần */
+}
+/* CSS để giới hạn kích thước tối đa của hình ảnh trong carousel */
+.carousel-inner .item img {
+    width: 100%; /* Kích thước chiều rộng 100% của khung hình */
+    height: 400px; /* Tự động duyệt tỷ lệ chiều cao */
+    
+}
+.carousel-inner {
+    width: 100%; /* Kích thước chiều rộng 100% của khung hình */
+    height: 100%; /* Tự động duyệt tỷ lệ chiều cao */
+    margin-top: 80px;
+}
+/* styles.css */
+.card {
+    border: none;
+}
+
+.card-img-top {
+    max-width: 100%;
+    height: auto;
+}
+
+.card-title {
+    font-size: 1.25rem;
+}
+
+.card-text {
+    color: #555;
+}
+
+.text-muted {
+    color: #777;
+}
+.card-title.custom-black {
+    color: #000; /* Màu đen */
+    font-weight: bold; /* Độ đậm cho tiêu đề */
+}
+.custom-image-size {
+    max-width: 100%; /* Kích thước tối đa chiều rộng */
+    max-height: 200px; /* Kích thước tối đa chiều cao */
+}
+
+.modal-footer {
+    margin: auto;
+    padding: 15px;
+    text-align: center;
+    border-top: 1px solid #e5e5e5;
+}
+.modal-body {
+    position: relative;
+    font-size: xx-large;
+    text-align: center;
+    padding: 15px;
+}

@@ -1,0 +1,118 @@
+﻿@model  List<DuAnRapChieuPhim.Models.BinhLuan>
+@using PagedList
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Movie";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <div class="container-fluid py-4">
+        <table class="table">
+            <tr>
+                <th>
+                    Thời gian
+                </th>
+                <th>
+                    Nội dung
+                </th>
+                <th>
+                    Số lượng Like
+                </th>
+                <th>
+                    Số lượng dislike
+                </th>
+                <th>
+                    Đánh giá
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ThoiGian)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NoiDung)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SoluongLike)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SoluongDislike)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DanhGia)
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger delete-button" data-toggle="modal" data-target="#deleteConfirmationModal" data-id="@item.MaBL">
+                            Xóa
+                        </button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</main>
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận xóa bình luận</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc muốn xóa bình luận này ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary huy-button" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Chắc chắn</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="selectedItemId" />
+<script>
+    $("#confirmDeleteButton").click(function (e) {
+        e.preventDefault();
+        // Lấy giá trị từ input có id là "selectedItemId"
+        var selectedItemId = $("#selectedItemId").val();
+        // Kiểm tra xem giá trị có tồn tại không
+        if (selectedItemId) {
+            // Gọi action trong controller với giá trị selectedItemId
+            // Thay đổi đường dẫn và phương thức HTTP tùy thuộc vào ứng dụng của bạn
+            $.ajax({
+                url: "/XuLy/DLComment", // Đường dẫn đến action trong controller
+                method: "POST", // Phương thức HTTP (POST, GET, PUT, DELETE, etc.)
+                data: { itemId: selectedItemId }, // Dữ liệu gửi đi (nếu cần)
+                success: function (response) {
+                    // Xử lý khi action thành công
+                    console.log("Action thành công", response);
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.error("Lỗi khi gọi action", error);
+                }
+            });
+        } else {
+            // Thông báo nếu giá trị không tồn tại
+            console.warn("Không có giá trị được chọn");
+        }
+    });
+    $(document).ready(function () {
+        $('.delete-button').click(function (e) {
+            e.preventDefault();
+            var itemId = $(this).data("id");
+            $("#selectedItemId").val(itemId);
+            $('#confirmDeleteModal').modal('show');
+        });
+    });
+    $(document).ready(function () {
+        $('.huy-button').click(function (e) {
+            $('#confirmDeleteModal').modal('hide');
+            $('#addMovieModal').modal('hide');
+        });
+    });
+</script>
